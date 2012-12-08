@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rest-client version="3.1"><request><http-version>1.1</http-version><http-follow-redirects/><URL>http://localhost:9000/services/errortasks</URL><method>POST</method><headers><header key="Content-Type" value="text/xml"/></headers><body><string content-type="text/plain" charset="UTF-8">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;create&gt;
+&lt;uri&gt;http://localhost:9000/services/errortasks&lt;/uri&gt;
+&lt;errortask&gt;
+&lt;type&gt;technisch&lt;/type&gt;
+&lt;application&gt;Rechtsschutz&lt;/application&gt;
+&lt;service&gt;MeineKlasse1.meineMethode1 &lt;/service&gt;
+&lt;processTemplate&gt;Prozessvorlage 4&lt;/processTemplate&gt;
+&lt;activity&gt;Aktivität 1&lt;/activity&gt;
+&lt;execution&gt;X034376&lt;/execution&gt;
+&lt;date&gt;16.10.2012 15:15:16&lt;/date&gt;
+&lt;stackTrace&gt;java.lang.RuntimeException: Ein Systemfehler ist aufgetreten. Booten Sie das Universum.&lt;/stackTrace&gt;
+&lt;comment&gt;great comment&lt;/comment&gt;
+&lt;serviceArgument1&gt;nice argument&lt;/serviceArgument1&gt;
+&lt;serviceArgument2&gt;and another one&lt;/serviceArgument2&gt;
+&lt;processId&gt;P04184&lt;/processId&gt;
+&lt;/errortask&gt;
+&lt;/create&gt;</string></body></request></rest-client>

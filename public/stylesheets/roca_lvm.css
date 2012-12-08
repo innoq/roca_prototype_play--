@@ -1,0 +1,24 @@
+.filter-column {
+	display: inline-block;
+}
+
+.filter-column label {
+	display: block;
+}
+
+.droppable-over {
+	font-weight: bolder;
+}
+
+.navbar-fixed-top {
+	z-index: 10001
+}
+
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}

@@ -1,0 +1,6 @@
+			@(context: ServerSideLogicContext)
+			<div class="pagination">
+				<ul>@for(p <- context.getPaginationFilter().getVisiblePages()){
+					<li @if(p.getRight().equals(context.getPaginationFilter().getPageNumber)){class="active"}><a href="@(context.getIssuesOverviewUriForPage(p.getRight()))">@p.getLeft()</a></li> }
+				</ul>
+			</div>

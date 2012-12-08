@@ -1,0 +1,59 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Root
+GET		/															controllers.IssuesController.getChoicePage()
+
+
+# ----------- Client Side -----------
+
+# Overview
+GET 	/services/clientside/$binder<issues>						controllers.ClientSideIssuesController.getClientSideOverview(binder: IssueOverviewStateBinder)
+GET 	/services/clientside/$binder<issues/open>					controllers.ClientSideIssuesController.getClientSideOverview(binder: IssueOverviewStateBinder)
+GET 	/services/clientside/$binder<issues/claimed/.*/assigned>	controllers.ClientSideIssuesController.getClientSideOverview(binder: IssueOverviewStateBinder)
+GET 	/services/clientside/$binder<issues/claimed/.*/notassigned>	controllers.ClientSideIssuesController.getClientSideOverview(binder: IssueOverviewStateBinder)
+GET 	/services/clientside/$binder<issues/closed>					controllers.ClientSideIssuesController.getClientSideOverview(binder: IssueOverviewStateBinder)
+
+# Close issues
+GET		/services/clientside/issues/closing							controllers.ClientSideIssuesController.issuesClosing()
+POST	/services/clientside/issues/closed							controllers.ClientSideIssuesController.closeIssues()
+
+# Open issue
+POST	/services/clientside/issues/open							controllers.ClientSideIssuesController.unassignIssue()
+
+# Assign Issue
+POST	/services/clientside/issues/claimed/:id/assigned			controllers.ClientSideIssuesController.assignIssueToUser(id: String)
+
+# Single Issue
+GET		/services/clientside/issues/:id								controllers.ClientSideIssuesController.getIssue(id: Long)
+POST	/services/clientside/issues/:id								controllers.ClientSideIssuesController.updateIssue(id: Long)
+
+# ----------- Server Side -----------
+
+# Overview
+GET		/services/issues/											controllers.IssuesController.getRoot()
+GET     /services/$binder<issues>									controllers.IssuesController.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/open>								controllers.IssuesController.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/claimed/.*/assigned>				controllers.IssuesController.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/claimed/.*/notassigned>			controllers.IssuesController.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/closed>							controllers.IssuesController.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+
+# Close issues
+GET		/services/issues/closing									controllers.IssuesController.issuesClosing()
+POST	/services/issues/closed										controllers.IssuesController.closeIssues()
+
+# Open issue
+POST	/services/issues/open										controllers.IssuesController.unassignIssue(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter)
+
+# Assign Issue
+POST	/services/issues/claimed/:id/assigned						controllers.IssuesController.assignIssueToUser(id: String,partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter)
+
+# Single Issue
+GET		/services/issues/:id										controllers.IssuesController.getIssue(id: Long)
+POST	/services/issues/:id										controllers.IssuesController.updateIssue(id: Long)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+

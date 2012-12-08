@@ -1,0 +1,27 @@
+@(issues: List[String], context: Context)
+      <div id="contentarea" class="span10">
+         <div class="content">
+            <h3>Closing of @issues.size() issues</h3>
+            <form class="form-horizontal">
+               <hr />
+               <div class="control-group">
+                  <label class="control-label">Kommentar</label>
+                  <div class="controls">
+                     <textarea form="putForm" class="input-xxlarge" name="comment" rows="3"></textarea>
+                  </div>
+               </div>
+               <div class="form-actions">
+                  <button form="putForm" type="submit" name="close" class="btn">Close</button>
+                  <button form="getForm" type="submit" class="btn">Cancel</button>
+               </div>
+            </form>
+            <form action="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER))" method="GET" id="getForm">
+            </form>
+            <form action="@context.getCloseIssuesUri()" method="POST" id="putForm">
+               <input type="hidden" value="PUT" name="_method" />
+               @for(i <- issues){
+               <input type="hidden" value="@i" name="issueId" />
+               }
+            </form>
+         </div>
+      </div>

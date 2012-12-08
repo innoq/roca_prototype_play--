@@ -1,0 +1,89 @@
+@(context: ServerSideLogicContext)
+
+@import forms.PartialSorting.SortableAttribute._
+@import forms.PartialSorting.SortDirection._
+
+<tr>
+	@if(context.isStateOpen() || context.isStateAssignedCurrentUser()){
+	<th></th> }
+	<th>Issue-ID <a
+		href="@(context.getAllIssuesWithNewSortingUri(ID,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(ID,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th>
+	<th>Issue Type <a
+		href="@(context.getAllIssuesWithNewSortingUri(ISSUE_TYPE,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(ISSUE_TYPE,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th>
+	<th>Summary <a
+		href="@(context.getAllIssuesWithNewSortingUri(SUMMARY,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@context.getAllIssuesWithNewSortingUri(SUMMARY,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th>
+	<th>Priority <a
+		href="@(context.getAllIssuesWithNewSortingUri(PRIORITY,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(PRIORITY,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th>
+	<th>Project <a
+		href="@(context.getAllIssuesWithNewSortingUri(PROJECT,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(PROJECT,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th>
+	<th>Component <a
+		href="@(context.getAllIssuesWithNewSortingUri(COMPONENT,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(COMPONENT,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th>
+	<th>Reporter <a
+		href="@(context.getAllIssuesWithNewSortingUri(REPORTER,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(REPORTER,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th> @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()){
+	<th>Assigned Person <a
+		href="@(context.getAllIssuesWithNewSortingUri(ASSIGNED_USER,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(ASSIGNED_USER,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th> }
+	<th>Created <a
+		href="@(context.getAllIssuesWithNewSortingUri(OPEN_DATE,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(OPEN_DATE,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th> @if(context.isStateClosed()){
+	<th>Closed <a
+		href="@(context.getAllIssuesWithNewSortingUri(CLOSE_DATE,ASCENDING))">
+			<i class="icon-chevron-up"> </i>
+	</a> <a
+		href="@(context.getAllIssuesWithNewSortingUri(CLOSE_DATE,DESCENDING))">
+			<i class="icon-chevron-down"> </i>
+	</a>
+	</th> }
+</tr>
