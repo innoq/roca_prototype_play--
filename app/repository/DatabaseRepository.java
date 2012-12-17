@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import models.Issue;
-import models.IssueGenerator;
+import tools.IssueGenerator;
 import models.User;
 import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
