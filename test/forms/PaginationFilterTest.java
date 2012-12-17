@@ -95,16 +95,16 @@ public class PaginationFilterTest extends PlayBaseTest {
 		paginationFilter.filterIssues(issues);
 
 		assertEquals(10, issues.size());
-		assertEquals(0, issues.get(0).getId().intValue());
-		assertEquals(1, issues.get(1).getId().intValue());
-		assertEquals(2, issues.get(2).getId().intValue());
-		assertEquals(3, issues.get(3).getId().intValue());
-		assertEquals(4, issues.get(4).getId().intValue());
-		assertEquals(5, issues.get(5).getId().intValue());
-		assertEquals(6, issues.get(6).getId().intValue());
-		assertEquals(7, issues.get(7).getId().intValue());
-		assertEquals(8, issues.get(8).getId().intValue());
-		assertEquals(9, issues.get(9).getId().intValue());
+		assertEquals(0, issues.get(0).id.intValue());
+		assertEquals(1, issues.get(1).id.intValue());
+		assertEquals(2, issues.get(2).id.intValue());
+		assertEquals(3, issues.get(3).id.intValue());
+		assertEquals(4, issues.get(4).id.intValue());
+		assertEquals(5, issues.get(5).id.intValue());
+		assertEquals(6, issues.get(6).id.intValue());
+		assertEquals(7, issues.get(7).id.intValue());
+		assertEquals(8, issues.get(8).id.intValue());
+		assertEquals(9, issues.get(9).id.intValue());
 	}
 
 	@Test
@@ -133,16 +133,16 @@ public class PaginationFilterTest extends PlayBaseTest {
 		paginationFilter.filterIssues(issues);
 
 		assertEquals(10, issues.size());
-		assertEquals(80, issues.get(0).getId().intValue());
-		assertEquals(81, issues.get(1).getId().intValue());
-		assertEquals(82, issues.get(2).getId().intValue());
-		assertEquals(83, issues.get(3).getId().intValue());
-		assertEquals(84, issues.get(4).getId().intValue());
-		assertEquals(85, issues.get(5).getId().intValue());
-		assertEquals(86, issues.get(6).getId().intValue());
-		assertEquals(87, issues.get(7).getId().intValue());
-		assertEquals(88, issues.get(8).getId().intValue());
-		assertEquals(89, issues.get(9).getId().intValue());
+		assertEquals(80, issues.get(0).id.intValue());
+		assertEquals(81, issues.get(1).id.intValue());
+		assertEquals(82, issues.get(2).id.intValue());
+		assertEquals(83, issues.get(3).id.intValue());
+		assertEquals(84, issues.get(4).id.intValue());
+		assertEquals(85, issues.get(5).id.intValue());
+		assertEquals(86, issues.get(6).id.intValue());
+		assertEquals(87, issues.get(7).id.intValue());
+		assertEquals(88, issues.get(8).id.intValue());
+		assertEquals(89, issues.get(9).id.intValue());
 	}
 
 	private void addNumberOfIssues(List<Issue> issues, int i) {

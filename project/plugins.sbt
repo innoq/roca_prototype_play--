@@ -7,6 +7,10 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("play" % "sbt-plugin" % "2.0.4")
 
+resolvers += {
+  "remeniuk repo" at "http://remeniuk.github.com/maven" 
+}
+
 libraryDependencies += {
   "org.netbeans" %% "sbt-netbeans-plugin" % "0.1.4"
 }

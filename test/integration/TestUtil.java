@@ -12,21 +12,21 @@ public class TestUtil {
 
 	static Issue createDummyIssue(Long id) {
 		Issue issue = new Issue(id);
-		issue.setProjectName("test");
-		issue.setPriority("test");
-		issue.setSummary("test");
-		issue.setIssueType("test");
-		issue.setExceptionStackTrace("test");
-		issue.setReporter("test");
-		issue.setComponentName("test");
-		issue.setComponentVersion("test");
-		issue.setProcessingState(IssueProcessingState.CLAIMED);
-		issue.setOpenDate(new Date());
-		issue.setCloseDate(new Date());
-		issue.setCloseAction(ExecutionAction.ABORT);
-		issue.setAssignedUser(User.find.byId(TEST_USER.getId()));
+		issue.projectName = "test";
+		issue.priority = "test";
+		issue.summary = "test";
+		issue.issueType = "test";
+		issue.exceptionStackTrace = "test";
+		issue.reporter = "test";
+		issue.componentName = "test";
+		issue.componentVersion = "test";
+		issue.processingState = IssueProcessingState.CLAIMED;
+		issue.openDate = new Date();
+		issue.closeDate = new Date();
+		issue.closeAction = ExecutionAction.ABORT;
+		issue.assignedUser = User.find.byId(TEST_USER.id);
 		issue.setArguments(Collections.<String, String> emptyMap());
-		issue.setDescription("test");
+		issue.description = "test";
 
 		return issue;
 	}

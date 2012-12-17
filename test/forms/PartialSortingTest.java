@@ -25,7 +25,8 @@ public class PartialSortingTest {
 	private Issue Issue1;
 	private Issue Issue2;
 	private Issue Issue3;
-	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+			"MM/dd/yyyy");
 	private Map<String, String[]> queryString;
 	private List<Issue> issues;
 
@@ -33,19 +34,19 @@ public class PartialSortingTest {
 	public void setUp() throws ParseException {
 
 		Issue1 = new Issue(1L);
-		Issue1.setIssueType("b");
-		Issue1.setComponentName("b");
-		Issue1.setOpenDate(DATE_FORMAT.parse("12/12/2012"));
+		Issue1.issueType = "b";
+		Issue1.componentName = "b";
+		Issue1.openDate = DATE_FORMAT.parse("12/12/2012");
 
 		Issue2 = new Issue(2L);
-		Issue2.setIssueType("b");
-		Issue2.setComponentName("b");
-		Issue2.setOpenDate(DATE_FORMAT.parse("12/13/2012"));
+		Issue2.issueType = "b";
+		Issue2.componentName = "b";
+		Issue2.openDate = DATE_FORMAT.parse("12/13/2012");
 
 		Issue3 = new Issue(3L);
-		Issue2.setIssueType("a");
-		Issue3.setComponentName("c");
-		Issue3.setOpenDate(DATE_FORMAT.parse("12/14/2012"));
+		Issue2.issueType = "a";
+		Issue3.componentName = "c";
+		Issue3.openDate = DATE_FORMAT.parse("12/14/2012");
 
 		issues = new ArrayList<Issue>();
 		issues.add(Issue1);
@@ -58,11 +59,15 @@ public class PartialSortingTest {
 	@Test
 	public void bindCreatesTheCorrectPartialSorting() {
 
-		queryString.put("sorting", new String[] { "1", "OPEN_DATE", "DESCENDING" });
-		queryString.put("sorting", new String[] { "1", "OPEN_DATE", "DESCENDING" });
-		queryString.put("sorting", new String[] { "1", "OPEN_DATE", "DESCENDING" });
+		queryString.put("sorting", new String[] { "1", "OPEN_DATE",
+				"DESCENDING" });
+		queryString.put("sorting", new String[] { "1", "OPEN_DATE",
+				"DESCENDING" });
+		queryString.put("sorting", new String[] { "1", "OPEN_DATE",
+				"DESCENDING" });
 
-		Option<PartialSorting> option = new PartialSorting().bind("sorting", queryString);
+		Option<PartialSorting> option = new PartialSorting().bind("sorting",
+				queryString);
 		assertEquals(true, option.isDefined());
 
 		PartialSorting sorting = option.get();
@@ -79,15 +84,19 @@ public class PartialSortingTest {
 	public void unbindCreatesCorrectQueryString() {
 
 		List<IssueComparator> comparators = new ArrayList<IssueComparator>();
-		comparators.add(new IssueComparator(1, SortableAttribute.ASSIGNED_USER, SortDirection.ASCENDING));
-		comparators.add(new IssueComparator(2, SortableAttribute.CLOSE_DATE, SortDirection.DESCENDING));
-		comparators.add(new IssueComparator(3, SortableAttribute.COMPONENT_VERSION, SortDirection.DESCENDING));
+		comparators.add(new IssueComparator(1, SortableAttribute.ASSIGNED_USER,
+				SortDirection.ASCENDING));
+		comparators.add(new IssueComparator(2, SortableAttribute.CLOSE_DATE,
+				SortDirection.DESCENDING));
+		comparators.add(new IssueComparator(3,
+				SortableAttribute.COMPONENT_VERSION, SortDirection.DESCENDING));
 
 		PartialSorting sorting = new PartialSorting();
 		sorting.setComparators(comparators);
 
 		String queryString = sorting.unbind("partialSorting");
-		assertEquals("partialSorting=1,ASSIGNED_USER,ASCENDING&partialSorting=2,CLOSE_DATE,DESCENDING&partialSorting=3,COMPONENT_VERSION,DESCENDING",
+		assertEquals(
+				"partialSorting=1,ASSIGNED_USER,ASCENDING&partialSorting=2,CLOSE_DATE,DESCENDING&partialSorting=3,COMPONENT_VERSION,DESCENDING",
 				queryString);
 	}
 
@@ -113,7 +122,8 @@ public class PartialSortingTest {
 		assertEquals(3, issues.size());
 	}
 
-	private Set<IssueComparator> createComparatorsForAllSortableAttributes(SortDirection ordering) {
+	private Set<IssueComparator> createComparatorsForAllSortableAttributes(
+			SortDirection ordering) {
 
 		Set<IssueComparator> comparators = new HashSet<IssueComparator>();
 		int couner = 1;
@@ -144,9 +154,12 @@ public class PartialSortingTest {
 	public void sortIssuesDescendingDateTypeProcessid() {
 
 		Set<IssueComparator> comparators = new HashSet<IssueComparator>();
-		comparators.add(new IssueComparator(1, SortableAttribute.ISSUE_TYPE, SortDirection.DESCENDING));
-		comparators.add(new IssueComparator(2, SortableAttribute.COMPONENT, SortDirection.DESCENDING));
-		comparators.add(new IssueComparator(3, SortableAttribute.OPEN_DATE, SortDirection.DESCENDING));
+		comparators.add(new IssueComparator(1, SortableAttribute.ISSUE_TYPE,
+				SortDirection.DESCENDING));
+		comparators.add(new IssueComparator(2, SortableAttribute.COMPONENT,
+				SortDirection.DESCENDING));
+		comparators.add(new IssueComparator(3, SortableAttribute.OPEN_DATE,
+				SortDirection.DESCENDING));
 
 		PartialSorting sorting = new PartialSorting();
 		sorting.setComparators(comparators);

@@ -1,5 +1,6 @@
 package controllers;
 
+import actions.AuthentificationAction;
 import models.Issue;
 import models.IssueProcessingState;
 

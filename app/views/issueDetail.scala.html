@@ -1,86 +1,86 @@
 @(issue: models.Issue, context: Context)
 <div id="contentarea" class="span10">
-	<div class="content">
-		<h3>Issue @issue.getId()</h3>
-				<form class="form-horizontal"
-			action="@context.getUpdateIssueUri(issue.getId())"
-			method="POST" id="putForm">
-		<dl class="dl-horizontal">
-			<dt>Issue-ID:</dt>
-			<dd>@issue.getId()</dd>
+    <div class="content">
+        <h3>Issue @issue.id</h3>
+        <form class="form-horizontal"
+              action="@context.getUpdateIssueUri(issue.id)"
+              method="POST" id="putForm">
+            <dl class="dl-horizontal">
+                <dt>Issue-ID:</dt>
+                <dd>@issue.id</dd>
 
-			<dt>Project:</dt>
-			<dd>@issue.getProjectName()</dd>
+                <dt>Project:</dt>
+                <dd>@issue.projectName</dd>
 
-			@if(issue.assignedUser !=null){
-			<dt>Assigned Person:</dt>
-			<dd>@issue.getAssignedUser().getName()</dd>
-			}
-			<dt>Created:</dt>
-			<dd>@issue.getOpenDate()</dd>
+                @if(issue.assignedUser !=null){
+                <dt>Assigned Person:</dt>
+                <dd>@issue.assignedUser.name</dd>
+                }
+                <dt>Created:</dt>
+                <dd>@issue.openDate</dd>
 
-			<dt>Reporter:</dt>
-			<dd>@issue.getReporter()</dd>
+                <dt>Reporter:</dt>
+                <dd>@issue.reporter</dd>
 
-			<dt>Issue Type:</dt>
-			<dd>@issue.getIssueType()</dd>
+                <dt>Issue Type:</dt>
+                <dd>@issue.issueType</dd>
 
-			<dt>Component:</dt>
-			<dd>@issue.getComponentName()</dd>
+                <dt>Component:</dt>
+                <dd>@issue.componentName</dd>
 
-			<dt>Version:</dt>
-			<dd>@issue.getComponentVersion()</dd>
+                <dt>Version:</dt>
+                <dd>@issue.componentVersion</dd>
 
-			@if(issue.isClosed()){
-			<dt>Closed:</dt>
-			<dd>@issue.getCloseDate()</dd>
-			}
+                @if(issue.isClosed()){
+                <dt>Closed:</dt>
+                <dd>@issue.closeDate</dd>
+                }
 
-			<dt>Summary:</dt>
-			<dd>@issue.getSummary()</dd>
-		</dl>
-		<hr />
+                <dt>Summary:</dt>
+                <dd>@issue.summary</dd>
+            </dl>
+            <hr />
 
-		<h4>Exception-Stacktrace</h4>
-		<p>@if(issue.getExceptionStackTrace()!=null){
-		<pre class="pre-scrollable">@issue.getExceptionStackTrace()
-						</pre>
-		}else{nicht vorhanden}
-		<hr />
+            <h4>Exception-Stacktrace</h4>
+            <p>@if(issue.exceptionStackTrace!=null){
+            <pre class="pre-scrollable">@issue.exceptionStackTrace
+            </pre>
+            }else{nicht vorhanden}
+            <hr />
 
 
-			<input type="hidden" value="PUT" name="_method" />
-			<h4>Zusatzparameter</h4>
-			<fieldset>
-				@if(issue.getArguments.size()>0){nicht vorhanden}else{ @for(a <-
-				issue.getArguments()){ <input type="hidden"
-					value="@a.getArgumentId()" name="argumentId" />
-				<div class="control-group">
-					<label class="control-label">@a.getArgumentId()</label>
-					<div class="controls">
-						<textarea form="putForm" class="input-xxlarge" name="argument"
-							rows="@controllers.IssuesController.countLines(a.getArguments())"@if(!issue.isAssignedToCurrentUser()){readonly}>@a.getArguments()</textarea>
-					</div>
-				</div>
-				} }
-			</fieldset>
-			<hr />
-			<div class="control-group">
-				<label class="control-label">Kommentar</label>
-				<div class="controls">
-					<textarea form="putForm" class="input-xxlarge" name="comment"
-						rows="@controllers.IssuesController.countLines(issue.getComment())" @if(!issue.isAssignedToCurrentUser()){readonly}>@issue.getComment()
-					</textarea>
-				</div>
-			</div>
-			
-			@if(issue.isAssignedToCurrentUser()){
-			<div class="form-actions">
-				<button form="putForm" summary="submit" name="close"
-					class="btn btn-primary">Issue schlie&szlig;en</button>
-				<button form="putForm" summary="submit" class="btn btn-primary">Speichern</button>
-			</div>
-			}
-		</form>
-	</div>
+            <input type="hidden" value="PUT" name="_method" />
+            <h4>Zusatzparameter</h4>
+            <fieldset>
+                @if(issue.arguments.size()>0){nicht vorhanden}else{ @for(a <-
+                issue.arguments){ <input type="hidden"
+                                         value="@a.argumentId" name="argumentId" />
+                <div class="control-group">
+                    <label class="control-label">@a.argumentId</label>
+                    <div class="controls">
+                        <textarea form="putForm" class="input-xxlarge" name="argument"
+                                  rows="@controllers.IssuesController.countLines(a.arguments)"@if(!issue.isAssignedToCurrentUser()){readonly}>@a.arguments</textarea>
+                    </div>
+                </div>
+                } }
+            </fieldset>
+            <hr />
+            <div class="control-group">
+                <label class="control-label">Kommentar</label>
+                <div class="controls">
+                    <textarea form="putForm" class="input-xxlarge" name="comment"
+                              rows="@controllers.IssuesController.countLines(issue.comment)" @if(!issue.isAssignedToCurrentUser()){readonly}>@issue.comment
+                </textarea>
+            </div>
+        </div>
+
+        @if(issue.isAssignedToCurrentUser()){
+        <div class="form-actions">
+            <button form="putForm" summary="submit" name="close"
+                    class="btn btn-primary">Issue schlie&szlig;en</button>
+            <button form="putForm" summary="submit" class="btn btn-primary">Speichern</button>
+        </div>
+        }
+    </form>
+</div>
 </div>

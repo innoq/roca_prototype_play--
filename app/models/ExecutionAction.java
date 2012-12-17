@@ -16,10 +16,7 @@ public enum ExecutionAction {
 	 */
 	COMPLETE("Ausfuehrung beenden");
 
-	private final String description;
-
 	private ExecutionAction(String description) {
-		this.description = description;
 	}
 
 

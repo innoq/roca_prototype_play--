@@ -39,11 +39,11 @@ public class SelectionFilterTest {
 	public void filterIssuesFiltersWithAndConcatenationBetweenSimilarTypes() {
 
 		Issue Issue1 = new Issue(1L);
-		Issue1.setComponentName("hallo");
+		Issue1.componentName = "hallo";
 		issues.add(Issue1);
 
 		Issue Issue2 = new Issue(1L);
-		Issue2.setComponentName("xxx");
+		Issue2.componentName = "xxx";
 		issues.add(Issue2);
 
 		queryString.put(FilterableAttributes.COMPONENT.getQueryParam(), new String[] { "test", "hallo", "hund" });
@@ -59,18 +59,18 @@ public class SelectionFilterTest {
 	public void filterIssuesFiltersWithOrConcatenationBetweenSimilarTypes() {
 
 		Issue Issue1 = new Issue(1L);
-		Issue1.setComponentName("test");
-		Issue1.setReporter("false");
+		Issue1.componentName = "test";
+		Issue1.reporter = "false";
 		issues.add(Issue1);
 
 		Issue Issue2 = new Issue(1L);
-		Issue2.setComponentName("false");
-		Issue2.setReporter("test");
+		Issue2.componentName = "false";
+		Issue2.reporter = "test";
 		issues.add(Issue2);
 
 		Issue Issue3 = new Issue(1L);
-		Issue3.setComponentName("test");
-		Issue3.setReporter("test");
+		Issue3.componentName = "test";
+		Issue3.reporter = "test";
 		issues.add(Issue3);
 
 		queryString.put(FilterableAttributes.COMPONENT.getQueryParam(), new String[] { "test", "hallo", "hund" });

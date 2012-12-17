@@ -44,22 +44,22 @@ public class IssueModelIntTest extends PlayBaseTest {
 		assertSame(allIssues.size(), 1);
 		Issue dbIssue = allIssues.get(0);
 
-		assertEquals(issue.getId(), dbIssue.getId());
-		assertEquals(issue.getProjectName(), dbIssue.getProjectName());
-		assertEquals(issue.getPriority(), dbIssue.getPriority());
-		assertEquals(issue.getIssueType(), dbIssue.getIssueType());
-		assertEquals(issue.getSummary(), dbIssue.getSummary());
-		assertEquals(issue.getExceptionStackTrace(), dbIssue.getExceptionStackTrace());
-		assertEquals(issue.getDescription(), dbIssue.getDescription());
-		assertEquals(issue.getReporter(), dbIssue.getReporter());
-		assertEquals(issue.getComponentName(), dbIssue.getComponentName());
-		assertEquals(issue.getComponentVersion(), dbIssue.getComponentVersion());
-		assertEquals(issue.getProcessingState(), dbIssue.getProcessingState());
-		assertEquals(issue.getOpenDate(), dbIssue.getOpenDate());
-		assertEquals(issue.getCloseDate(), dbIssue.getCloseDate());
-		assertEquals(issue.getCloseAction(), dbIssue.getCloseAction());
-		assertEquals(issue.getAssignedUser(), dbIssue.getAssignedUser());
-		assertEquals(issue.getArguments(), dbIssue.getArguments());
-		assertEquals(issue.getComment(), dbIssue.getComment());
+		assertEquals(issue.id, dbIssue.id);
+		assertEquals(issue.projectName, dbIssue.projectName);
+		assertEquals(issue.priority, dbIssue.priority);
+		assertEquals(issue.issueType, dbIssue.issueType);
+		assertEquals(issue.summary, dbIssue.summary);
+		assertEquals(issue.exceptionStackTrace, dbIssue.exceptionStackTrace);
+		assertEquals(issue.description, dbIssue.description);
+		assertEquals(issue.reporter, dbIssue.reporter);
+		assertEquals(issue.componentName, dbIssue.componentName);
+		assertEquals(issue.componentVersion, dbIssue.componentVersion);
+		assertEquals(issue.processingState, dbIssue.processingState);
+		assertEquals(issue.openDate, dbIssue.openDate);
+		assertEquals(issue.closeDate, dbIssue.closeDate);
+		assertEquals(issue.closeAction, dbIssue.closeAction);
+		assertEquals(issue.assignedUser, dbIssue.assignedUser);
+		assertEquals(issue.arguments, dbIssue.arguments);
+		assertEquals(issue.comment, dbIssue.comment);
 	}
 }

@@ -1,11 +1,12 @@
 package controllers;
 
-import play.mvc.Call;
+import actions.AuthentificationAction;
 import forms.PaginationFilter;
 import forms.PartialSorting;
 import forms.PartialSorting.SortDirection;
 import forms.PartialSorting.SortableAttribute;
 import forms.SelectionFilter;
+import play.mvc.Call;
 
 public class ServerSideLogicContext implements Context{
 
