@@ -39,7 +39,7 @@ public class ClientSideIssues extends Controller {
 
 	public static Result closeIssues() {
 		Issues.doCloseIssues();
-		return redirect(routes.ClientSideIssuesController
+		return redirect(routes.ClientSideIssues
 				.getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
 	}
 
@@ -61,14 +61,14 @@ public class ClientSideIssues extends Controller {
 	public static Result unassignIssue() {
 
 		Issues.doUnassignIssue();
-		return redirect(routes.ClientSideIssuesController
+		return redirect(routes.ClientSideIssues
 				.getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
 	}
 
 	public static Result assignIssueToUser(String userName) {
 
 		Issues.doAssignIssueToUser(userName);
-		return redirect(routes.ClientSideIssuesController
+		return redirect(routes.ClientSideIssues
 				.getClientSideOverview(IssueOverviewStateBinder.OPEN));
 	}
 
@@ -86,7 +86,7 @@ public class ClientSideIssues extends Controller {
 	public static Result updateIssue(Long id) {
 
 		Issues.doUpdateIssue(id);
-		return redirect(routes.ClientSideIssuesController
+		return redirect(routes.ClientSideIssues
 				.getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
 	}
 }

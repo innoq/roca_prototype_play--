@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
 import play.db.ebean.Model;
 import repository.RepositoryFactory;
 
@@ -23,6 +24,7 @@ import repository.RepositoryFactory;
 public class Issue extends Model implements Comparable<Issue> {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     public Long id;
     public String projectName;
@@ -58,6 +60,74 @@ public class Issue extends Model implements Comparable<Issue> {
         super();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public String getIssueType() {
+        return issueType;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getExceptionStackTrace() {
+        return exceptionStackTrace;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getReporter() {
+        return reporter;
+    }
+
+    public String getComponentName() {
+        return componentName;
+    }
+
+    public String getComponentVersion() {
+        return componentVersion;
+    }
+
+    public IssueProcessingState getProcessingState() {
+        return processingState;
+    }
+
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public ExecutionAction getCloseAction() {
+        return closeAction;
+    }
+
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    public List<ServiceArguments> getArguments() {
+        return arguments;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
     public void setArguments(Map<String, String> arguments) {
 
         for (ServiceArguments argument : this.arguments) {
@@ -83,15 +153,13 @@ public class Issue extends Model implements Comparable<Issue> {
         return processingState.equals(IssueProcessingState.OPEN);
     }
 
-    // TODO inject User as parameter. You sholdn't call a controller from a model class.
-    public boolean isAssignedToCurrentUser() {
-        return (processingState.equals(IssueProcessingState.CLAIMED) && assignedUser != null) ? AuthentificationAction.getCurrentUserName().equals(
+    public boolean isAssignedToCurrentUser(String currentUserName) {
+        return (processingState.equals(IssueProcessingState.CLAIMED) && assignedUser != null) ? currentUserName.equals(
                 assignedUser.name) : false;
     }
 
-    // TODO inject User as parameter. You sholdn't call a controller from a model class.
-    public boolean isAssignedToOtherUser() {
-        return (processingState.equals(IssueProcessingState.CLAIMED) && assignedUser != null) ? !AuthentificationAction.getCurrentUserName().equals(
+    public boolean isAssignedToOtherUser(String currentUserName) {
+        return (processingState.equals(IssueProcessingState.CLAIMED) && assignedUser != null) ? !currentUserName.equals(
                 assignedUser.name) : false;
     }
 }

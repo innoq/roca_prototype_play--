@@ -59,7 +59,7 @@
                     <label class="control-label">@a.argumentId</label>
                     <div class="controls">
                         <textarea form="putForm" class="input-xxlarge" name="argument"
-                                  rows="@controllers.IssuesController.countLines(a.arguments)"@if(!issue.isAssignedToCurrentUser()){readonly}>@a.arguments</textarea>
+                                  rows="@controllers.Issues.countLines(a.arguments)"@if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)){readonly}>@a.arguments</textarea>
                     </div>
                 </div>
                 } }
@@ -69,12 +69,12 @@
                 <label class="control-label">Kommentar</label>
                 <div class="controls">
                     <textarea form="putForm" class="input-xxlarge" name="comment"
-                              rows="@controllers.IssuesController.countLines(issue.comment)" @if(!issue.isAssignedToCurrentUser()){readonly}>@issue.comment
+                              rows="@controllers.Issues.countLines(issue.comment)" @if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)){readonly}>@issue.comment
                 </textarea>
             </div>
         </div>
 
-        @if(issue.isAssignedToCurrentUser()){
+        @if(issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)){
         <div class="form-actions">
             <button form="putForm" summary="submit" name="close"
                     class="btn btn-primary">Issue schlie&szlig;en</button>

@@ -40,7 +40,7 @@ public class Issues extends Controller {
 
     public static Result assignIssueToUser(String userName, PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
         doAssignIssueToUser(userName);
-        return redirect(routes.IssuesController.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.OPEN));
+        return redirect(routes.Issues.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.OPEN));
     }
 
     static void doAssignIssueToUser(String userName) {
@@ -63,7 +63,7 @@ public class Issues extends Controller {
     public static Result closeIssues() {
 
         doCloseIssues();
-        return redirect(routes.IssuesController.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
@@ -135,7 +135,7 @@ public class Issues extends Controller {
      * @return die Repraesentation der Root Page.
      */
     public static Result getRoot() {
-        return redirect(routes.IssuesController.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.OPEN));
     }
 
@@ -158,7 +158,7 @@ public class Issues extends Controller {
     public static Result unassignIssue(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
 
         doUnassignIssue();
-        return redirect(routes.IssuesController.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
+        return redirect(routes.Issues.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
     static void doUnassignIssue() {
@@ -177,7 +177,7 @@ public class Issues extends Controller {
 
         doUpdateIssue(id);
 
-        return redirect(routes.IssuesController.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
@@ -241,7 +241,7 @@ public class Issues extends Controller {
         @Override
         public boolean evaluate(Object arg0) {
             Issue issue = (Issue) arg0;
-            return issue.isAssignedToCurrentUser();
+            return issue.isAssignedToCurrentUser(AuthentificationAction.getCurrentUserName());
         }
     }
 
@@ -250,7 +250,7 @@ public class Issues extends Controller {
         @Override
         public boolean evaluate(Object arg0) {
             Issue issue = (Issue) arg0;
-            return issue.isAssignedToOtherUser();
+            return issue.isAssignedToOtherUser(AuthentificationAction.getCurrentUserName());
         }
     }
 

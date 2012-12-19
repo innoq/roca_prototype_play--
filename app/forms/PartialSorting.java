@@ -129,7 +129,7 @@ public class PartialSorting implements QueryStringBindable<PartialSorting> {
 
 	@Override
 	public String javascriptUnbind() {
-		throw new UnsupportedOperationException("JavaScript unbind is not uspported!");
+		throw new UnsupportedOperationException("JavaScript unbind is not supported!");
 	}
 
 }

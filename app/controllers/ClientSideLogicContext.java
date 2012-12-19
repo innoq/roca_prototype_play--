@@ -14,17 +14,17 @@ public class ClientSideLogicContext implements Context{
 
 	@Override
 	public Call getClosingProcessUri() {
-		return routes.ClientSideIssuesController.issuesClosing();
+		return routes.ClientSideIssues.issuesClosing();
 	}
 
 	@Override
 	public Call getAssignIssueUri() {
-		return routes.ClientSideIssuesController.assignIssueToUser(AuthentificationAction.getCurrentUserName());
+		return routes.ClientSideIssues.assignIssueToUser(AuthentificationAction.getCurrentUserName());
 	}
 
 	@Override
 	public Call getUnassignIssueUri() {
-		return routes.ClientSideIssuesController.unassignIssue();
+		return routes.ClientSideIssues.unassignIssue();
 	}
 
 	@Override
@@ -54,22 +54,22 @@ public class ClientSideLogicContext implements Context{
 
 	@Override
 	public Call getOverviewUriForState(IssuesOverviewState state) {
-		return routes.ClientSideIssuesController.getClientSideOverview(IssueOverviewStateBinder.create(state));
+		return routes.ClientSideIssues.getClientSideOverview(IssueOverviewStateBinder.create(state));
 	}
 
 	@Override
 	public Call getUriForIssue(Long id) {
-		return routes.ClientSideIssuesController.getIssue(id);
+		return routes.ClientSideIssues.getIssue(id);
 	}
 
 	@Override
 	public Call getCloseIssuesUri() {
-		return routes.ClientSideIssuesController.closeIssues();
+		return routes.ClientSideIssues.closeIssues();
 	}
 
 	@Override
 	public Call getUpdateIssueUri(Long id) {
-		return routes.ClientSideIssuesController.updateIssue(id);
+		return routes.ClientSideIssues.updateIssue(id);
 	}
 	
 }

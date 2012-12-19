@@ -48,9 +48,9 @@ public enum IssuesOverviewState {
 			return OPEN;
 		} else if (issue.isClosed()) {
 			return CLOSED;
-		} else if (issue.isAssignedToCurrentUser()) {
+		} else if (issue.isAssignedToCurrentUser(AuthentificationAction.getCurrentUserName())) {
 			return ASSIGNED_CURRENT_USER;
-		} else if (issue.isAssignedToOtherUser()) {
+		} else if (issue.isAssignedToOtherUser(AuthentificationAction.getCurrentUserName())) {
 			return ASSIGNED_OTHERS;
 		}
 
