@@ -3,8 +3,8 @@
     <div class="content">
         <h3>Issue @issue.id</h3>
         <form class="form-horizontal"
-              action="@context.getUpdateIssueUri(issue.id)"
-              method="POST" id="putForm">
+        action="@context.getUpdateIssueUri(issue.getId)"
+        method="POST" id="putForm">
             <dl class="dl-horizontal">
                 <dt>Issue-ID:</dt>
                 <dd>@issue.id</dd>
@@ -12,9 +12,9 @@
                 <dt>Project:</dt>
                 <dd>@issue.projectName</dd>
 
-                @if(issue.assignedUser !=null){
-                <dt>Assigned Person:</dt>
-                <dd>@issue.assignedUser.name</dd>
+                @if(issue.assignedUser != null) {
+                    <dt>Assigned Person:</dt>
+                    <dd>@issue.assignedUser.name</dd>
                 }
                 <dt>Created:</dt>
                 <dd>@issue.openDate</dd>
@@ -31,56 +31,73 @@
                 <dt>Version:</dt>
                 <dd>@issue.componentVersion</dd>
 
-                @if(issue.isClosed()){
-                <dt>Closed:</dt>
-                <dd>@issue.closeDate</dd>
+                @if(issue.isClosed()) {
+                    <dt>Closed:</dt>
+                    <dd>@issue.closeDate</dd>
                 }
 
                 <dt>Summary:</dt>
                 <dd>@issue.summary</dd>
             </dl>
-            <hr />
+        <hr />
 
             <h4>Exception-Stacktrace</h4>
-            <p>@if(issue.exceptionStackTrace!=null){
-            <pre class="pre-scrollable">@issue.exceptionStackTrace
+            <p> @if(issue.exceptionStackTrace != null) {
+            <pre class="pre-scrollable">
+            @issue.exceptionStackTrace
             </pre>
-            }else{nicht vorhanden}
-            <hr />
+        } else {
+            nicht vorhanden
+        }
+        <hr />
 
 
-            <input type="hidden" value="PUT" name="_method" />
+        <input type="hidden" value="PUT" name="_method"/>
             <h4>Zusatzparameter</h4>
             <fieldset>
-                @if(issue.arguments.size()>0){nicht vorhanden}else{ @for(a <-
-                issue.arguments){ <input type="hidden"
-                                         value="@a.argumentId" name="argumentId" />
-                <div class="control-group">
-                    <label class="control-label">@a.argumentId</label>
-                    <div class="controls">
-                        <textarea form="putForm" class="input-xxlarge" name="argument"
-                                  rows="@controllers.Issues.countLines(a.arguments)"@if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)){readonly}>@a.arguments</textarea>
+            @if(issue.arguments.size() > 0) {
+                nicht vorhanden
+            } else {
+                @for(a <-
+                issue.arguments) {
+                    <input type="hidden"
+                        value="@a.argumentId" name="argumentId"/>
+                    <div class="control-group">
+                        <label class="control-label">@a.argumentId</label>
+                        <div class="controls">
+                            <textarea form="putForm" class="input-xxlarge" name="argument"
+                            rows="@controllers.Issues.countLines(a.arguments)"
+                                @if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)) {
+                                    readonly
+                                } > @a.arguments
+                            </textarea>
+                        </div>
                     </div>
-                </div>
-                } }
+                }
+            }
             </fieldset>
-            <hr />
+        <hr />
             <div class="control-group">
                 <label class="control-label">Kommentar</label>
                 <div class="controls">
                     <textarea form="putForm" class="input-xxlarge" name="comment"
-                              rows="@controllers.Issues.countLines(issue.comment)" @if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)){readonly}>@issue.comment
-                </textarea>
+                    rows="@controllers.Issues.countLines(issue.comment)"
+                        @if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)) {
+                            readonly
+                        } > @issue.comment
+                    </textarea>
+                </div>
             </div>
-        </div>
 
-        @if(issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)){
-        <div class="form-actions">
-            <button form="putForm" summary="submit" name="close"
-                    class="btn btn-primary">Issue schlie&szlig;en</button>
-            <button form="putForm" summary="submit" class="btn btn-primary">Speichern</button>
-        </div>
-        }
-    </form>
-</div>
+            @if(issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)) {
+                <div class="form-actions">
+                    <button form="putForm" summary="submit" name="close"
+                    class="btn btn-primary">
+                        Issue schlie&szlig;en
+                    </button>
+                    <button form="putForm" summary="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            }
+        </form>
+    </div>
 </div>

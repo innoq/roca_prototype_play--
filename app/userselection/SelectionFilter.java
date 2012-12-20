@@ -1,4 +1,4 @@
-package forms;
+package userselection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -214,7 +214,7 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
 
     @Override
     public Option<SelectionFilter> bind(String key, Map<String, String[]> queryString) {
-        List<Issue> issues = Repository.getInstance().getAll();
+        List<Issue> issues = Repository.getInstance().getAllIssues();
         return Option.Some(SelectionFilter.create(issues, queryString));
     }
 
@@ -240,7 +240,7 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
 
     @Override
     public String javascriptUnbind() {
-        throw new UnsupportedOperationException("JavaScript unbind wird nicht unterstuetzt!");
+        throw new UnsupportedOperationException("JavaScript unbind is not supported!");
     }
 
     public static SelectionFilter create(List<Issue> issues, Map<String, String[]> queryString) {

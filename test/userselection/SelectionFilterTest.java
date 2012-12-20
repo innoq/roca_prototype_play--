@@ -1,4 +1,4 @@
-package forms;
+package userselection;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,8 +12,7 @@ import models.Issue;
 
 import org.junit.Test;
 
-import forms.SelectionFilter;
-import forms.SelectionFilter.FilterableAttributes;
+import userselection.SelectionFilter.FilterableAttributes;
 
 
 public class SelectionFilterTest {
@@ -38,11 +37,11 @@ public class SelectionFilterTest {
 	@Test
 	public void filterIssuesFiltersWithAndConcatenationBetweenSimilarTypes() {
 
-		Issue Issue1 = new Issue(1L);
+		Issue Issue1 = new Issue(1);
 		Issue1.componentName = "hallo";
 		issues.add(Issue1);
 
-		Issue Issue2 = new Issue(1L);
+		Issue Issue2 = new Issue(1);
 		Issue2.componentName = "xxx";
 		issues.add(Issue2);
 
@@ -58,17 +57,17 @@ public class SelectionFilterTest {
 	@Test
 	public void filterIssuesFiltersWithOrConcatenationBetweenSimilarTypes() {
 
-		Issue Issue1 = new Issue(1L);
+		Issue Issue1 = new Issue(1);
 		Issue1.componentName = "test";
 		Issue1.reporter = "false";
 		issues.add(Issue1);
 
-		Issue Issue2 = new Issue(1L);
+		Issue Issue2 = new Issue(1);
 		Issue2.componentName = "false";
 		Issue2.reporter = "test";
 		issues.add(Issue2);
 
-		Issue Issue3 = new Issue(1L);
+		Issue Issue3 = new Issue(1);
 		Issue3.componentName = "test";
 		Issue3.reporter = "test";
 		issues.add(Issue3);

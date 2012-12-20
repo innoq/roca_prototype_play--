@@ -1,4 +1,4 @@
-package forms;
+package userselection;
 
 import java.util.Comparator;
 
@@ -11,8 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import forms.PartialSorting.SortDirection;
-import forms.PartialSorting.SortableAttribute;
+import userselection.PartialSorting.SortDirection;
+import userselection.PartialSorting.SortableAttribute;
 
 /**
  * Comparator fuer {@link Issue}s. Arbeitet aktuell ueber die Bean Notation um

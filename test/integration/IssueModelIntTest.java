@@ -28,7 +28,7 @@ public class IssueModelIntTest extends PlayBaseTest {
 		Issue errorIssue = TestUtil.createDummyIssue(2L);
 		Ebean.save(errorIssue);
 
-		List<Issue> allIssues = Repository.getInstance().getAll();
+		List<Issue> allIssues = Repository.getInstance().getAllIssues();
 		assertEquals(allIssues.get(0), errorIssue);
 	}
 
@@ -38,7 +38,7 @@ public class IssueModelIntTest extends PlayBaseTest {
 		Issue issue = TestUtil.createDummyIssue(3L);
 		Ebean.save(issue);
 
-		List<Issue> allIssues = Repository.getInstance().getAll();
+		List<Issue> allIssues = Repository.getInstance().getAllIssues();
 
 		assertSame(allIssues.size(), 1);
 		Issue dbIssue = allIssues.get(0);

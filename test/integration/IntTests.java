@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ IssueModelIntTest.class, MainControllerIntTest.class,
-		UserModelIntTest.class })
+@SuiteClasses(value = {IssueModelIntTest.class, MainControllerIntTest.class
+})
 public class IntTests {
 
 }

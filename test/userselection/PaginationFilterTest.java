@@ -1,7 +1,8 @@
-package forms;
+package userselection;
 
 import static org.junit.Assert.assertEquals;
 
+import controllers.Issues;
 import integration.PlayBaseTest;
 
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import java.util.Map;
 import models.Issue;
 
 import org.junit.Test;
-
-import forms.PaginationFilter;
 
 import play.libs.F.Option;
 
@@ -87,25 +86,26 @@ public class PaginationFilterTest extends PlayBaseTest {
 	public void reduceIssuesToRequestedPage_ResultsInTheOriginalIssues() {
 
 		addNumberOfIssues(issues, 90);
+        List<Issue> issuesBefore = new ArrayList<Issue>(issues);
 
-		PaginationFilter paginationFilter = new PaginationFilter();
-		paginationFilter.setPageNumber(1);
-		paginationFilter.setPageSize(10);
+        PaginationFilter paginationFilter = new PaginationFilter();
+        paginationFilter.setPageNumber(1);
+        paginationFilter.setPageSize(10);
 
-		paginationFilter.filterIssues(issues);
+        paginationFilter.filterIssues(issues);
 
-		assertEquals(10, issues.size());
-		assertEquals(0, issues.get(0).id.intValue());
-		assertEquals(1, issues.get(1).id.intValue());
-		assertEquals(2, issues.get(2).id.intValue());
-		assertEquals(3, issues.get(3).id.intValue());
-		assertEquals(4, issues.get(4).id.intValue());
-		assertEquals(5, issues.get(5).id.intValue());
-		assertEquals(6, issues.get(6).id.intValue());
-		assertEquals(7, issues.get(7).id.intValue());
-		assertEquals(8, issues.get(8).id.intValue());
-		assertEquals(9, issues.get(9).id.intValue());
-	}
+        assertEquals(10, issues.size());
+        assertEquals(issuesBefore.get(0), issues.get(0));
+        assertEquals(issuesBefore.get(1), issues.get(1));
+        assertEquals(issuesBefore.get(2), issues.get(2));
+        assertEquals(issuesBefore.get(3), issues.get(3));
+        assertEquals(issuesBefore.get(4), issues.get(4));
+        assertEquals(issuesBefore.get(5), issues.get(5));
+        assertEquals(issuesBefore.get(6), issues.get(6));
+        assertEquals(issuesBefore.get(7), issues.get(7));
+        assertEquals(issuesBefore.get(8), issues.get(8));
+        assertEquals(issuesBefore.get(9), issues.get(9));
+    }
 
 	@Test
 	public void reduceIssuesToRequestedPage_ResultsInTheOriginalEmptyListIfThereAreNoIssues() {
@@ -125,6 +125,7 @@ public class PaginationFilterTest extends PlayBaseTest {
 	public void reduceIssuesToRequestedPage_ResultsInIssue81until90IfPageIs9() {
 
 		addNumberOfIssues(issues, 100);
+        List<Issue> issuesBefore = new ArrayList<Issue>(issues);
 
 		PaginationFilter paginationFilter = new PaginationFilter();
 		paginationFilter.setPageNumber(9);
@@ -133,22 +134,22 @@ public class PaginationFilterTest extends PlayBaseTest {
 		paginationFilter.filterIssues(issues);
 
 		assertEquals(10, issues.size());
-		assertEquals(80, issues.get(0).id.intValue());
-		assertEquals(81, issues.get(1).id.intValue());
-		assertEquals(82, issues.get(2).id.intValue());
-		assertEquals(83, issues.get(3).id.intValue());
-		assertEquals(84, issues.get(4).id.intValue());
-		assertEquals(85, issues.get(5).id.intValue());
-		assertEquals(86, issues.get(6).id.intValue());
-		assertEquals(87, issues.get(7).id.intValue());
-		assertEquals(88, issues.get(8).id.intValue());
-		assertEquals(89, issues.get(9).id.intValue());
-	}
+        assertEquals(issuesBefore.get(80), issues.get(0));
+        assertEquals(issuesBefore.get(81), issues.get(1));
+        assertEquals(issuesBefore.get(82), issues.get(2));
+        assertEquals(issuesBefore.get(83), issues.get(3));
+        assertEquals(issuesBefore.get(84), issues.get(4));
+        assertEquals(issuesBefore.get(85), issues.get(5));
+        assertEquals(issuesBefore.get(86), issues.get(6));
+        assertEquals(issuesBefore.get(87), issues.get(7));
+        assertEquals(issuesBefore.get(88), issues.get(8));
+        assertEquals(issuesBefore.get(89), issues.get(9));
+    }
 
 	private void addNumberOfIssues(List<Issue> issues, int i) {
 
 		for (int j = 0; j < i; j++) {
-			issues.add(new Issue(new Long(j)));
+			issues.add(new Issue(j));
 		}
 	}
 }

@@ -1,11 +1,11 @@
 package controllers;
 
 import actions.AuthentificationAction;
-import forms.PaginationFilter;
-import forms.PartialSorting;
-import forms.PartialSorting.SortDirection;
-import forms.PartialSorting.SortableAttribute;
-import forms.SelectionFilter;
+import userselection.PaginationFilter;
+import userselection.PartialSorting;
+import userselection.PartialSorting.SortDirection;
+import userselection.PartialSorting.SortableAttribute;
+import userselection.SelectionFilter;
 import play.mvc.Call;
 
 public class ServerSideLogicContext implements Context{
@@ -93,7 +93,7 @@ public class ServerSideLogicContext implements Context{
 
 	public Call getIssuesOverviewUriForPage(int pageNumber) {
 		return routes.Issues.getAllIssues(partialSorting,
-				new forms.PaginationFilter(pageNumber), selectionFilter,
+				new userselection.PaginationFilter(pageNumber), selectionFilter,
 				IssueOverviewStateBinder.create(state));
 	}
 
@@ -108,7 +108,7 @@ public class ServerSideLogicContext implements Context{
 	}
 
 	@Override
-	public Call getUriForIssue(Long id) {
+	public Call getUriForIssue(int id) {
 		return routes.Issues.getIssue(id);
 	}
 
@@ -118,7 +118,7 @@ public class ServerSideLogicContext implements Context{
 	}
 
 	@Override
-	public Call getUpdateIssueUri(Long id) {
+	public Call getUpdateIssueUri(int id) {
 		return routes.Issues.updateIssue(id);
 	}
 	

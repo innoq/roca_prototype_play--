@@ -1,48 +1,45 @@
-@(context: Context)(content: Html)(scripts: Html) @import forms._
+@(context: Context)(content: Html)(scripts: Html) @import userselection._
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <title>Issue Tracker "Not my Issue"</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="description" content="" />
-      <meta name="author" content="" />
-      <!-- Bootstrap references -->
-      <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/bootstrap.min.css")" />
-      <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap_fix.css")" />
-      <link href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")" rel="stylesheet">
-      <link href="@routes.Assets.at("stylesheets/roca_lvm.min.css")" rel="stylesheet">
-      <link href="@routes.Assets.at("stylesheets/jquery-ui-1.8.16.custom.min.css")" rel="stylesheet" />
-      <link href="@routes.Assets.at("stylesheets/jquery.multiselect.min.css")" rel="stylesheet">
-      <link href="@routes.Assets.at("stylesheets/jquery.multiselect.filter.min.css")" rel="stylesheet">
-      <!--<link href="/assets/jquery-ui/css/jquery.dataTables.css" rel="stylesheet"> -->
-      <link href="@routes.Assets.at("stylesheets/bootstrap-datatables.min.css")" rel="stylesheet">
-      @scripts
-   </head>
-   <body>
-      <div id="body-content">
-        	@menubar()
-         <div class="container-fluid">
-            <div class="row-fluid">
-               <div class="span2">
-				@navigationSidebar(context)
-               </div>
-			  <!--/span-->
-			  <div id="contentarea" class="span10">
-               @content
-               </div>
-              <!--/span--> 
-              </div>
-            <!--/row-->
-            <hr />
-         </div>
-         <!--/.fluid-container-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Issue Tracker "Not my Issue"</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/bootstrap.min.css")"/>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap_fix.css")"/>
+    <link href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("stylesheets/roca_lvm.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("stylesheets/jquery-ui-1.8.16.custom.min.css")" rel="stylesheet"/>
+    <link href="@routes.Assets.at("stylesheets/jquery.multiselect.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("stylesheets/jquery.multiselect.filter.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("stylesheets/bootstrap-datatables.min.css")" rel="stylesheet">
+    @scripts
+  </head>
+  <body>
+    <div id="body-content">
+      @menubar()
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span2">
+            @navigationSidebar(context)
+          </div>
+          <!--/span-->
+          <div id="contentarea" class="span10">
+            @content
+          </div>
+          <!--/span-->
+        </div>
+        <!--/row-->
+        <hr />
       </div>
-<!-- damit auch IE6-8 damit klarkommen -->
-<!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-      <![endif]-->
-<!-- JQuery -->
-</body>
+      <!--/.fluid-container-->
+    </div>
+    <!-- damit auch IE6-8 damit klarkommen -->
+    <!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+    <!-- JQuery -->
+  </body>
 </html>
-               

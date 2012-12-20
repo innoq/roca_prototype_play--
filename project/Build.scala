@@ -19,7 +19,7 @@ object ApplicationBuild extends Build {
       // Add your own project settings here      
         lessEntryPoints <<= baseDirectory(customLessEntryPoints),
         routesImport += "controllers._",
-        routesImport += "forms._",
+        routesImport += "userselection._",
         routesImport += "controllers.IssuesOverviewState._"
     )
     

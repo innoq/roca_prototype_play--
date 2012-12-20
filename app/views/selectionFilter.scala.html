@@ -1,62 +1,87 @@
 @(context: ServerSideLogicContext)
 
-@import forms.SelectionFilter._ 
-@import forms.SelectionFilter.FilterableAttributes._
+@import userselection.SelectionFilter._
+@import userselection.SelectionFilter.FilterableAttributes._
 
 <div class="filter">
-		<form class="formular" id="filterform" method="GET"
-			action="@Controller.request().path()" >
-			<div class="control-group">
-				<div class="filter-column">
-					<label for="project">Project</label> <select class="multiselect"
-						id="@PROJECT.getQueryParam()" name="@PROJECT.getQueryParam()"
-						size="5" multiple> 
-						@for(p <- context.getSelectionFilter().getAllProjects()){
-						<option @if(context.getSelectionFilter().isSelectedProject(p)){selected}>@p</option>
-						}
-					</select>
-				</div>
-				<div class="filter-column">
-					<label for="component">Component</label> <select
-						class="multiselect" id="@COMPONENT.getQueryParam()"
-						name="@COMPONENT.getQueryParam()" size="5" multiple>
-						@for(p <- context.getSelectionFilter().getAllComponents()){
-						<option @if(context.getSelectionFilter().isSelectedComponent(p)){selected}>@p</option>
-						}
-					</select>
-				</div>
-				<div class="filter-column">
-					<label for="issueType">Issue Type</label> <select
-						class="multiselect" id="@ISSUE_TYPE.getQueryParam()"
-						name="@ISSUE_TYPE.getQueryParam()" size="5" multiple>
-						@for(p <- context.getSelectionFilter().getAllIssueTypes()){
-						<option @if(context.getSelectionFilter().isSelectedType(p)){selected}>@p</option>
-						}
-					</select>
-				</div>
-				<div class="filter-column">
-					<label for="reporter">Reporter</label> <select class="multiselect"
-						id="@REPORTER.getQueryParam()" name="@REPORTER.getQueryParam()"
-						size="5" multiple> 
-						@for(p <- context.getSelectionFilter().getAllReporters()){
-						<option @if(context.getSelectionFilter().isSelectedReporter(p)){selected}>@p</option>
-						}
-					</select>
-				</div>
-				@if(!context.isStateOpen() || context.isStateAssignedCurrentUser()){
-				<div class="filter-column">
-					<label for="assignedUser">Assigned User</label> <select
-						class="multiselect" id="@ASSIGENED_USER.getQueryParam()"
-						name="@ASSIGENED_USER.getQueryParam()" size="5" multiple>
-						@for(p <- context.getSelectionFilter().getAllAssignedUsers()){
-						<option @if(context.getSelectionFilter().isSelectedUser(p)){selected}>@p</option>
-						}
-					</select>
-				</div>
-				}
-			</div>
-			<div class="control-group">
-				<button type="submit" class="btn">Filter</button>
-			</div>
-		</form>
-	</div>
+    <form class="formular" id="filterform" method="GET"
+    action="@Controller.request().path()">
+        <div class="control-group">
+            <div class="filter-column">
+                <label >Project</label> <select class="multiselect"
+            id="@PROJECT.getQueryParam()" name="@PROJECT.getQueryParam()"
+            size="5" multiple
+                >
+                @for(p <- context.getSelectionFilter().getAllProjects()) {
+                    <option
+                        @if(context.getSelectionFilter().isSelectedProject(p)) {
+                            selected
+                        } > @p
+                    </option>
+                }
+            </select>
+            </div>
+            <div class="filter-column">
+                <label >Component</label> <select
+            class="multiselect" id="@COMPONENT.getQueryParam()"
+            name="@COMPONENT.getQueryParam()" size="5" multiple
+                >
+                @for(p <- context.getSelectionFilter().getAllComponents()) {
+                    <option
+                        @if(context.getSelectionFilter().isSelectedComponent(p)) {
+                            selected
+                        } > @p
+                    </option>
+                }
+            </select>
+            </div>
+            <div class="filter-column">
+                <label >Issue Type</label> <select
+            class="multiselect" id="@ISSUE_TYPE.getQueryParam()"
+            name="@ISSUE_TYPE.getQueryParam()" size="5" multiple
+                >
+                @for(p <- context.getSelectionFilter().getAllIssueTypes()) {
+                    <option
+                        @if(context.getSelectionFilter().isSelectedType(p)) {
+                            selected
+                        } > @p
+                    </option>
+                }
+            </select>
+            </div>
+            <div class="filter-column">
+                <label >Reporter</label> <select class="multiselect"
+            id="@REPORTER.getQueryParam()" name="@REPORTER.getQueryParam()"
+            size="5" multiple
+                >
+                @for(p <- context.getSelectionFilter().getAllReporters()) {
+                    <option
+                        @if(context.getSelectionFilter().isSelectedReporter(p)) {
+                            selected
+                        } > @p
+                    </option>
+                }
+            </select>
+            </div>
+            @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                <div class="filter-column">
+                    <label >Assigned User</label> <select
+                class="multiselect" id="@ASSIGENED_USER.getQueryParam()"
+                name="@ASSIGENED_USER.getQueryParam()" size="5" multiple
+                    >
+                    @for(p <- context.getSelectionFilter().getAllAssignedUsers()) {
+                        <option
+                            @if(context.getSelectionFilter().isSelectedUser(p)) {
+                                selected
+                            } > @p
+                        </option>
+                    }
+                </select>
+                </div>
+            }
+        </div>
+        <div class="control-group">
+            <button type="submit" class="btn">Filter</button>
+        </div>
+    </form>
+</div>

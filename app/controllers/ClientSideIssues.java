@@ -20,7 +20,7 @@ public class ClientSideIssues extends Controller {
 
 	public static Result getClientSideOverview(IssueOverviewStateBinder binder) {
 
-		List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAll());
+		List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAllIssues());
 		IssuesOverviewState state = binder.getState();
 
 		Issues.filterIssuesForState(requestedIssues, state);
@@ -71,7 +71,7 @@ public class ClientSideIssues extends Controller {
 				.getClientSideOverview(IssueOverviewStateBinder.OPEN));
 	}
 
-	public static Result getIssue(Long id) {
+	public static Result getIssue(int id) {
 		Issue currentIssue = Repository.getInstance()
 				.findIssueById(id);
 
@@ -82,7 +82,7 @@ public class ClientSideIssues extends Controller {
 				clientSideLogicScripts.render()));
 	}
 
-	public static Result updateIssue(Long id) {
+	public static Result updateIssue(int id) {
 
 		Issues.doUpdateIssue(id);
 		return redirect(routes.ClientSideIssues

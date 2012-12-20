@@ -1,33 +1,26 @@
 package controllers;
 
-import forms.PaginationFilter;
-import forms.PartialSorting;
-import forms.SelectionFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import actions.AuthentificationAction;
 import models.Issue;
 import models.IssueProcessingState;
 import models.User;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.ArrayUtils;
-
-import actions.AuthentificationAction;
+import play.api.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
 import repository.Repository;
-import views.html.index;
-import views.html.issueDetail;
-import views.html.issuesClosing;
-import views.html.issuesClosingError;
-import views.html.issuesOverview;
-import views.html.main;
-import views.html.serverSideLogicScripts;
+import scala.None$;
+import scala.Option;
+import tools.IssueGenerator;
+import userselection.PaginationFilter;
+import userselection.PartialSorting;
+import userselection.SelectionFilter;
+import views.html.*;
+
+import java.util.*;
 
 /**
  * Controller fuer die Anwendung. Das Mapping der Controller-Methoden auf die
@@ -47,26 +40,11 @@ public class Issues extends Controller {
         String[] issueIds = ArrayUtils.nullToEmpty(request().body().asFormUrlEncoded().get("issueId"));
         User user = Repository.getInstance().findUserByName(userName);
         for (String id : issueIds) {
-            Issue issue = Repository.getInstance().findIssueById(Long.parseLong(id));
+            Issue issue = Repository.getInstance().findIssueById(Integer.parseInt(id));
             issue.assignedUser = user;
             issue.processingState = IssueProcessingState.CLAIMED;
             Repository.getInstance().save(issue);
         }
-    }
-
-    public static Result getAdminPage(){
-        return ok(views.html.admin.render());
-    }
-
-    public static Result createRandomIssues() {
-
-       // Map<String, String[]> form = request().body().asFormUrlEncoded();
-       // String[] numbers = form.get("number");
-       // Repository.getInstance().
-       // new IssueGenerator().createRandomIssues(numbers[0],);
-
-
-        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.OPEN));
     }
 
     /**
@@ -88,7 +66,7 @@ public class Issues extends Controller {
         String comment = body.get("comment")[0];
 
         for (String id : ids) {
-            Issue issue = Repository.getInstance().findIssueById(Long.parseLong(id));
+            Issue issue = Repository.getInstance().findIssueById(Integer.parseInt(id));
             issue.processingState = IssueProcessingState.CLOSED;
             issue.closeDate = new Date();
             issue.comment = comment;
@@ -115,7 +93,7 @@ public class Issues extends Controller {
     public static Result getAllIssues(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter,
                                       IssueOverviewStateBinder stateBinder) {
 
-        List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAll());
+        List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAllIssues());
         IssuesOverviewState state = stateBinder.getState();
 
         filterIssuesForState(requestedIssues, state);
@@ -136,7 +114,7 @@ public class Issues extends Controller {
      * @param id die Id des angeforderten Issues.
      * @return die Repruesentation des Issues.
      */
-    public static Result getIssue(Long id) {
+    public static Result getIssue(int id) {
         Issue currentIssue = Repository.getInstance().findIssueById(id);
 
         Context context = new ServerSideLogicContext(new PaginationFilter(), new SelectionFilter(), new PartialSorting(), IssuesOverviewState.getByIssue(currentIssue));
@@ -179,7 +157,7 @@ public class Issues extends Controller {
     static void doUnassignIssue() {
         Map<String, String[]> body = request().body().asFormUrlEncoded();
         String id = body.get("issueId")[0];
-        Issue issue = Repository.getInstance().findIssueById(Long.parseLong(id));
+        Issue issue = Repository.getInstance().findIssueById(Integer.parseInt(id));
         issue.processingState = IssueProcessingState.OPEN;
         Repository.getInstance().save(issue);
     }
@@ -188,7 +166,7 @@ public class Issues extends Controller {
      * Updatet den uebergebenen Issue und updatet die aktuelle Page des Users
      * ueber einen Redirect.
      */
-    public static Result updateIssue(Long id) {
+    public static Result updateIssue(int id) {
 
         doUpdateIssue(id);
 
@@ -196,7 +174,7 @@ public class Issues extends Controller {
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
-    static void doUpdateIssue(Long id) {
+    static void doUpdateIssue(int id) {
         Issue issue = Repository.getInstance().findIssueById(id);
         Map<String, String[]> body = request().body().asFormUrlEncoded();
 

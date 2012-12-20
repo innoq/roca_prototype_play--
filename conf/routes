@@ -3,8 +3,7 @@
 # ~~~~
 
 # Root
-GET		/															controllers.Issues.getChoicePage()
-                                                                                    
+GET		/															controllers.Issues.getChoicePage
 
 # ----------- Client Side -----------
 
@@ -26,8 +25,8 @@ POST	/services/clientside/issues/open							controllers.ClientSideIssues.unassig
 POST	/services/clientside/issues/claimed/:id/assigned			controllers.ClientSideIssues.assignIssueToUser(id: String)
 
 # Single Issue
-GET		/services/clientside/issues/:id								controllers.ClientSideIssues.getIssue(id: Long)
-POST	/services/clientside/issues/:id								controllers.ClientSideIssues.updateIssue(id: Long)
+GET		/services/clientside/issues/:id								controllers.ClientSideIssues.getIssue(id: Int)
+POST	/services/clientside/issues/:id								controllers.ClientSideIssues.updateIssue(id: Int)
 
 # ----------- Server Side -----------
 
@@ -50,8 +49,8 @@ POST	/services/issues/open										controllers.Issues.unassignIssue(partialSort
 POST	/services/issues/claimed/:id/assigned						controllers.Issues.assignIssueToUser(id: String,partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter)
 
 # Single Issue
-GET		/services/issues/:id										controllers.Issues.getIssue(id: Long)
-POST	/services/issues/:id										controllers.Issues.updateIssue(id: Long)
+GET		/services/issues/:id										controllers.Issues.getIssue(id: Int)
+POST	/services/issues/:id										controllers.Issues.updateIssue(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

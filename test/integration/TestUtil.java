@@ -11,7 +11,7 @@ import models.User;
 public class TestUtil {
 
 	static Issue createDummyIssue(Long id) {
-		Issue issue = new Issue(id);
+		Issue issue = new Issue(1);
 		issue.projectName = "test";
 		issue.priority = "test";
 		issue.summary = "test";
@@ -24,13 +24,13 @@ public class TestUtil {
 		issue.openDate = new Date();
 		issue.closeDate = new Date();
 		issue.closeAction = ExecutionAction.ABORT;
-		issue.assignedUser = User.find.byId(TEST_USER.id);
+		issue.assignedUser = TEST_USER;
 		issue.setArguments(Collections.<String, String> emptyMap());
 		issue.description = "test";
 
 		return issue;
 	}
 
-	static final User TEST_USER = new User(1L, "test");
+	static final User TEST_USER = new User("test");
 
 }

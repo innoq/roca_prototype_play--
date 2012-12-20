@@ -58,7 +58,7 @@ public class ClientSideLogicContext implements Context{
 	}
 
 	@Override
-	public Call getUriForIssue(Long id) {
+	public Call getUriForIssue(int id) {
 		return routes.ClientSideIssues.getIssue(id);
 	}
 
@@ -68,7 +68,7 @@ public class ClientSideLogicContext implements Context{
 	}
 
 	@Override
-	public Call getUpdateIssueUri(Long id) {
+	public Call getUpdateIssueUri(int id) {
 		return routes.ClientSideIssues.updateIssue(id);
 	}
 	

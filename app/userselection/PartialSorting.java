@@ -1,4 +1,4 @@
-package forms;
+package userselection;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -104,7 +104,6 @@ public class PartialSorting implements QueryStringBindable<PartialSorting> {
 		return Option.Some(strategy);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setComparators(Collection<IssueComparator> comparators) {
 		this.comparators = new ArrayList<IssueComparator>(comparators);
 

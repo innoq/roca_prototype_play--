@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import models.ExecutionAction;
 import models.Issue;
 import models.IssueProcessingState;
@@ -23,11 +25,15 @@ import models.User;
  */
 public final class IssueGenerator {
 
+
+    private  final static IssueGenerator INSTANCE = new IssueGenerator();
+    public final AtomicInteger idCounter = new AtomicInteger();
+
+
     final Date now = new Date();
     // vor hundert Tagen
     final Date onceUponATime = new Date(now.getTime() - 100L * 24L * 60L * 60L * 1000L);
-    final Random random;
-    long idCounter = 0;
+    final Random random = new Random();
     private static final List<Character> CHAR_TABLE = createCharTable();
     private static String EXCEPTION_STACK_TRACE = createExceptionStackTrace();
     private static String[] PERSONS = {"dev5878", "dev5879", "dev13425", "dev501", "dev60001", "dev621", "dev53"};
@@ -42,11 +48,17 @@ public final class IssueGenerator {
     private static final String[][] argumentNameLists = {{"einArgmuent", "nochEinArgument"},
         {"dasErsteArgument", "dasZweiteArgument", "dasDritteArgument"}, {}, {"einEimsamesArgument"}};
 
-    public IssueGenerator(final Random random) {
-        if (random == null) {
-            throw new IllegalArgumentException("argument random is mandatory");
-        }
-        this.random = random;
+    private IssueGenerator() {
+        super();
+    }
+
+
+    public static IssueGenerator getInstance() {
+        return INSTANCE;
+    }
+
+    public void reset(){
+        idCounter.set(0);
     }
 
     public List<User> createUsers() {
@@ -128,8 +140,8 @@ public final class IssueGenerator {
         return values[random.nextInt(values.length)];
     }
 
-    private Long createNextId() {
-        return ++idCounter;
+    private int createNextId() {
+        return idCounter.incrementAndGet();
     }
 
     private String createRandomExceptionStackTrace(final int nullProbabilityPercent) {

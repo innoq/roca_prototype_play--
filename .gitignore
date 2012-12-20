@@ -26,3 +26,6 @@ target/.history
 .classpath
 .idea/
 .idea_modules/
+*~
+*#
+.#*

@@ -4,8 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import forms.PaginationFilterTest;
-import forms.PartialSortingTest;
+import userselection.PaginationFilterTest;
+import userselection.PartialSortingTest;
 
 
 @RunWith(Suite.class)

@@ -8,7 +8,7 @@ public interface Context {
 
 	Call getClosingProcessUri();
 	
-	Call getUriForIssue(Long id);
+	Call getUriForIssue(int id);
 
 	Call getAssignIssueUri();
 
@@ -16,7 +16,7 @@ public interface Context {
 
 	Call getOverviewUriForState(IssuesOverviewState state);
 	
-	Call getUpdateIssueUri(Long id);
+	Call getUpdateIssueUri(int id);
 	
 	boolean isStateAssignedOtherUser();
 

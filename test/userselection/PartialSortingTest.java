@@ -1,4 +1,4 @@
-package forms;
+package userselection;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,8 +17,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import play.libs.F.Option;
-import forms.PartialSorting.SortDirection;
-import forms.PartialSorting.SortableAttribute;
+import userselection.PartialSorting.SortDirection;
+import userselection.PartialSorting.SortableAttribute;
 
 public class PartialSortingTest {
 
@@ -33,17 +33,17 @@ public class PartialSortingTest {
 	@Before
 	public void setUp() throws ParseException {
 
-		Issue1 = new Issue(1L);
+		Issue1 = new Issue(1);
 		Issue1.issueType = "b";
 		Issue1.componentName = "b";
 		Issue1.openDate = DATE_FORMAT.parse("12/12/2012");
 
-		Issue2 = new Issue(2L);
+		Issue2 = new Issue(2);
 		Issue2.issueType = "b";
 		Issue2.componentName = "b";
 		Issue2.openDate = DATE_FORMAT.parse("12/13/2012");
 
-		Issue3 = new Issue(3L);
+		Issue3 = new Issue(3);
 		Issue2.issueType = "a";
 		Issue3.componentName = "c";
 		Issue3.openDate = DATE_FORMAT.parse("12/14/2012");

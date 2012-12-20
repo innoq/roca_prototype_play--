@@ -1,72 +1,83 @@
-@(issues: List[models.Issue],context: Context)
+@(issues: List[models.Issue], context: Context)
 <div id="content" class="content">
-    @if(context.isFilterable){
-    @selectionFilter(context.asInstanceOf[ServerSideLogicContext])
+    @if(context.isFilterable) {
+        @selectionFilter(context.asInstanceOf[ServerSideLogicContext])
     }
     <div id="issues" class="issues">
-        @if(context.isStateOpen()){
-        <form action="@(context.getAssignIssueUri())" method="POST" >
-            } @if(context.isStateAssignedCurrentUser()){
-            <form action="@(context.getClosingProcessUri())" method="GET">
-                }
-                <table id="datatable" class="table table-striped"
-                       data-queryString="">
-                    <thead>
-                        @if(context.isFilterable){
-                        @partialSorting(context.asInstanceOf[ServerSideLogicContext])
-                        }else {
-                        <tr>
-                            @if(context.isStateOpen() || context.isStateAssignedCurrentUser()){
-                            <th></th> }
-                            <th>Issue-ID </th>
-                            <th>Issue Type </th>
-                            <th>Summary </th>
-                            <th>Priority </th>
-                            <th>Project </th>
-                            <th>Component </th>
-                            <th>Reporter </th> 
-                            @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()){
-                            <th>Assigned Person </th>
-                            }
-                            <th>Created</th>
-                            @if(context.isStateClosed()){
-                            <th>Closed </th> }
-                        </tr>
-                        }
-                    </thead>
-                    <tbody data-provides="rowlink" data-target="a.rowlink">
-                        @for(i <- issues){
-                        <tr data-issueId="@i.id">
-                            @if(context.isStateOpen() || context.isStateAssignedCurrentUser()){
-                            <td class="nolink"><input name="issueId" type="checkbox"
-                                                      value="@i.id" /></td> }
-                            <td class="nolink"><a
-                                    href="@(context.getUriForIssue(i.id))"
-                                    class="rowlink">@i.id</a></td>
-                            <td>@i.issueType</td>
-                            <td>@i.summary</td>
-                            <td>@i.priority</td>
-                            <td>@i.projectName</td>
-                            <td>@i.componentName</td>
-                            <td>@i.reporter</td> 
-                            @if(!context.isStateOpen()){
-                            <td>@i.assignedUser.name</td> }
-                            <td>@i.openDate</td> 
-                            @if(context.isStateClosed()){
-                            <td>@i.closeDate</td> }
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-                @if(issues.size() != 0 && context.isStateOpen()){
-                <button class="btn">&Uuml;bernehmen</button>
-            </form>
-            } @if(issues.size() != 0 && context.isStateAssignedCurrentUser()){
-            <button class="btn">Issue schließen</button>
+        @if(context.isStateOpen()) {
+            <form action="@(context.getAssignIssueUri())" method="POST">
+        } @if(context.isStateAssignedCurrentUser()) {
+        <form action="@(context.getClosingProcessUri())" method="GET">
+    }
+        <table id="datatable" class="table table-striped"
+        data-queryString="">
+            <thead>
+            @if(context.isFilterable) {
+                @partialSorting(context.asInstanceOf[ServerSideLogicContext])
+            } else {
+                <tr>
+                    @if(context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                        <th></th>
+                    }
+                    <th>Issue-ID</th>
+                    <th>Issue Type</th>
+                    <th>Summary</th>
+                    <th>Priority</th>
+                    <th>Project</th>
+                    <th>Component</th>
+                    <th>Reporter</th>
+                    @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                        <th>Assigned Person</th>
+                    }
+                    <th>Created</th>
+                    @if(context.isStateClosed()) {
+                        <th>Closed</th>
+                    }
+                </tr>
+            }
+            </thead>
+            <tbody data-provides="rowlink" data-target="a.rowlink">
+            @for(i <- issues) {
+                <tr data-issueId="@i.getId">
+                    @if(context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                        <td class="nolink">
+                        <input name="issueId" type="checkbox"
+                            value="@i.getId"/>
+                        </td>
+                    }
+                <td class="nolink">
+                    <a
+                    href="@(context.getUriForIssue(i.getId))"
+                    class="rowlink">
+                    @i.getId
+                    </a>
+                </td>
+                <td>@i.issueType</td>
+                <td>@i.summary</td>
+                <td>@i.priority</td>
+                <td>@i.projectName</td>
+                <td>@i.componentName</td>
+                <td>@i.reporter</td>
+                    @if(!context.isStateOpen()) {
+                        <td>@i.assignedUser.name</td>
+                    }
+                <td>@i.openDate</td>
+                    @if(context.isStateClosed()) {
+                        <td>@i.closeDate</td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+        @if(issues.size() != 0 && context.isStateOpen()) {
+            <button class="btn">&Uuml;bernehmen</button>
         </form>
-        }
-        @if(context.isFilterable){	
-        @pagination(context.asInstanceOf[ServerSideLogicContext])
+        } @if(issues.size() != 0 && context.isStateAssignedCurrentUser()) {
+        <button class="btn">Issue schließen</button>
+    </form>
+    }
+        @if(context.isFilterable) {
+            @pagination(context.asInstanceOf[ServerSideLogicContext])
         }
     </div>
 </div>

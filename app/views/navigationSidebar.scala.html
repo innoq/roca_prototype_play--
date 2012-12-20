@@ -1,10 +1,29 @@
 @(context: Context)
 <div class="well sidebar-nav">
-	<ul class="nav nav-list">
-		<li class="nav-header">Navigation</li>
-		<li @if(context.isStateOpen()){class="active"} @if(context.isStateAssignedCurrentUser()){data-targetUriBase="@context.getUnassignIssueUri()"}><a href="@context.getOverviewUriForState(IssuesOverviewState.OPEN)">Offene Fehler</a></li>
-		<li @if(context.isStateAssignedCurrentUser()){class="active"} @if(context.isStateOpen()){data-targetUriBase="@context.getAssignIssueUri()"}><a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER)">Mir zugeordnete Fehler</a></li>
-		<li @if(context.isStateAssignedOtherUser()){class="active"}><a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_OTHERS)">Anderen zugeordnete Fehler</a></li>
-		<li @if(context.isStateClosed()){class="active"}><a href="@context.getOverviewUriForState(IssuesOverviewState.CLOSED)">Abgeschlossene Fehler</a></li>
-	</ul>
-</div>
+<ul class="nav nav-list">
+<li class="nav-header">Navigation</li>
+<li @if(context.isStateOpen()) {
+    class="active"
+} @if(context.isStateAssignedCurrentUser()) {
+    data-targetUriBase=" @context.getUnassignIssueUri()
+    "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.OPEN)">Offene Fehler</a> </li>
+    <li @if(context.isStateAssignedCurrentUser()) {
+        class="active"} @if(context.isStateOpen()) {
+        data-targetUriBase=" @context.getAssignIssueUri()
+        "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER)">
+            Mir zugeordnete Fehler
+        </a> </li>
+        <li
+            @if(context.isStateAssignedOtherUser()) {
+                class="active"} > <a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_OTHERS)">
+            Anderen zugeordnete Fehler
+        </a>
+        </li>
+        <li
+            @if(context.isStateClosed()) {
+                class="active"} > <a href="@context.getOverviewUriForState(IssuesOverviewState.CLOSED)">
+            Abgeschlossene Fehler
+        </a>
+        </li>
+    </ul>
+    </div>
