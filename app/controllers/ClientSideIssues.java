@@ -8,7 +8,7 @@ import models.Issue;
 import org.apache.commons.lang3.ArrayUtils;
 import play.mvc.Controller;
 import play.mvc.Result;
-import repository.RepositoryFactory;
+import repository.Repository;
 import views.html.clientSideLogicScripts;
 import views.html.issueDetail;
 import views.html.issuesClosing;
@@ -20,8 +20,7 @@ public class ClientSideIssues extends Controller {
 
 	public static Result getClientSideOverview(IssueOverviewStateBinder binder) {
 
-		List<Issue> requestedIssues = new ArrayList<Issue>(RepositoryFactory
-				.getRepository().getAll());
+		List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAll());
 		IssuesOverviewState state = binder.getState();
 
 		Issues.filterIssuesForState(requestedIssues, state);
@@ -73,7 +72,7 @@ public class ClientSideIssues extends Controller {
 	}
 
 	public static Result getIssue(Long id) {
-		Issue currentIssue = RepositoryFactory.getRepository()
+		Issue currentIssue = Repository.getInstance()
 				.findIssueById(id);
 
 		ClientSideLogicContext context = new ClientSideLogicContext(

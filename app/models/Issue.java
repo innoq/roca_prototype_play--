@@ -1,7 +1,5 @@
 package models;
 
-import actions.AuthentificationAction;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.ebean.Model;
-import repository.RepositoryFactory;
+import repository.Repository;
 
 @Entity
 public class Issue extends Model implements Comparable<Issue> {
@@ -131,7 +129,7 @@ public class Issue extends Model implements Comparable<Issue> {
     public void setArguments(Map<String, String> arguments) {
 
         for (ServiceArguments argument : this.arguments) {
-            RepositoryFactory.getRepository().delete(argument);
+            Repository.getInstance().delete(argument);
         }
         this.arguments.clear();
 
@@ -161,5 +159,10 @@ public class Issue extends Model implements Comparable<Issue> {
     public boolean isAssignedToOtherUser(String currentUserName) {
         return (processingState.equals(IssueProcessingState.CLAIMED) && assignedUser != null) ? !currentUserName.equals(
                 assignedUser.name) : false;
+    }
+
+    public void closeAction() {
+        processingState = IssueProcessingState.CLOSED;
+        closeDate = new Date();
     }
 }

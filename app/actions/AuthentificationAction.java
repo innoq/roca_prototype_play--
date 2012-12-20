@@ -4,7 +4,7 @@ import models.User;
 import play.mvc.Controller;
 import play.mvc.Http.Context;
 import play.mvc.Result;
-import repository.RepositoryFactory;
+import repository.Repository;
 
 /**
  * Regelt die User Autentifizierung. Da diese praktisch diabled ist wird immer
@@ -23,7 +23,7 @@ public class AuthentificationAction extends play.mvc.Action<AuthentificationActi
 	public Result call(Context context) throws Throwable {
 		String username = USERNAME;
 		if (!context.session().containsValue(username)) {
-			User user = RepositoryFactory.getRepository().getRandomUser();
+			User user = Repository.getInstance().getRandomUser();
 			context.session().put(username, user.name);
 		}
 

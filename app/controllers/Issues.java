@@ -20,7 +20,7 @@ import actions.AuthentificationAction;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
-import repository.RepositoryFactory;
+import repository.Repository;
 import views.html.index;
 import views.html.issueDetail;
 import views.html.issuesClosing;
@@ -32,7 +32,7 @@ import views.html.serverSideLogicScripts;
 /**
  * Controller fuer die Anwendung. Das Mapping der Controller-Methoden auf die
  * HTTP Methoden und Uris erfolgt im routes file.
- *
+ * <p/>
  * Content Negotiation und Validierung werden aktuell nicht unterstuetzt.
  */
 @With(AuthentificationAction.class)
@@ -45,13 +45,28 @@ public class Issues extends Controller {
 
     static void doAssignIssueToUser(String userName) {
         String[] issueIds = ArrayUtils.nullToEmpty(request().body().asFormUrlEncoded().get("issueId"));
-        User user = RepositoryFactory.getRepository().findUserByName(userName);
+        User user = Repository.getInstance().findUserByName(userName);
         for (String id : issueIds) {
-            Issue issue = RepositoryFactory.getRepository().findIssueById(Long.parseLong(id));
+            Issue issue = Repository.getInstance().findIssueById(Long.parseLong(id));
             issue.assignedUser = user;
             issue.processingState = IssueProcessingState.CLAIMED;
-            RepositoryFactory.getRepository().save(issue);
+            Repository.getInstance().save(issue);
         }
+    }
+
+    public static Result getAdminPage(){
+        return ok(views.html.admin.render());
+    }
+
+    public static Result createRandomIssues() {
+
+       // Map<String, String[]> form = request().body().asFormUrlEncoded();
+       // String[] numbers = form.get("number");
+       // Repository.getInstance().
+       // new IssueGenerator().createRandomIssues(numbers[0],);
+
+
+        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.OPEN));
     }
 
     /**
@@ -73,11 +88,11 @@ public class Issues extends Controller {
         String comment = body.get("comment")[0];
 
         for (String id : ids) {
-            Issue issue = RepositoryFactory.getRepository().findIssueById(Long.parseLong(id));
+            Issue issue = Repository.getInstance().findIssueById(Long.parseLong(id));
             issue.processingState = IssueProcessingState.CLOSED;
             issue.closeDate = new Date();
             issue.comment = comment;
-            RepositoryFactory.getRepository().save(issue);
+            Repository.getInstance().save(issue);
         }
     }
 
@@ -89,18 +104,18 @@ public class Issues extends Controller {
      * Liefert eine Repraesentation aller Issues zurueck die den uebergebenen
      * Parametern entsprechen.
      *
-     * @param sorting die Sortierung fuer die Issues.
-     * @param pagination das angeforderte Subset von Issues.
-     * @param filter die Menge an Filterkriterien die ein zurueckgeliefertes
-     * Issue erfuellen muss.
+     * @param sorting     die Sortierung fuer die Issues.
+     * @param pagination  das angeforderte Subset von Issues.
+     * @param filter      die Menge an Filterkriterien die ein zurueckgeliefertes
+     *                    Issue erfuellen muss.
      * @param stateBinder schrenkt die Ergebnismenge aufgrund des Issue states
-     * ein.
+     *                    ein.
      * @return die Repraesentation der angeforderten Issues.
      */
     public static Result getAllIssues(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter,
-            IssueOverviewStateBinder stateBinder) {
+                                      IssueOverviewStateBinder stateBinder) {
 
-        List<Issue> requestedIssues = new ArrayList<Issue>(RepositoryFactory.getRepository().getAll());
+        List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAll());
         IssuesOverviewState state = stateBinder.getState();
 
         filterIssuesForState(requestedIssues, state);
@@ -122,7 +137,7 @@ public class Issues extends Controller {
      * @return die Repruesentation des Issues.
      */
     public static Result getIssue(Long id) {
-        Issue currentIssue = RepositoryFactory.getRepository().findIssueById(id);
+        Issue currentIssue = Repository.getInstance().findIssueById(id);
 
         Context context = new ServerSideLogicContext(new PaginationFilter(), new SelectionFilter(), new PartialSorting(), IssuesOverviewState.getByIssue(currentIssue));
         return ok(main.render(context, issueDetail.render(currentIssue, context), serverSideLogicScripts.render()));
@@ -164,9 +179,9 @@ public class Issues extends Controller {
     static void doUnassignIssue() {
         Map<String, String[]> body = request().body().asFormUrlEncoded();
         String id = body.get("issueId")[0];
-        Issue issue = RepositoryFactory.getRepository().findIssueById(Long.parseLong(id));
+        Issue issue = Repository.getInstance().findIssueById(Long.parseLong(id));
         issue.processingState = IssueProcessingState.OPEN;
-        RepositoryFactory.getRepository().save(issue);
+        Repository.getInstance().save(issue);
     }
 
     /**
@@ -182,21 +197,13 @@ public class Issues extends Controller {
     }
 
     static void doUpdateIssue(Long id) {
-        Issue issue = RepositoryFactory.getRepository().findIssueById(id);
+        Issue issue = Repository.getInstance().findIssueById(id);
         Map<String, String[]> body = request().body().asFormUrlEncoded();
-
-        updateIssueFromRequestBody(issue, body);
-    }
-
-    public static Result getChoicePage() {
-        return ok(index.render());
-    }
-
-    private static void updateIssueFromRequestBody(Issue issue, Map<String, String[]> body) {
 
         String[] arguments = ArrayUtils.nullToEmpty(body.get("argument"));
         String[] argumentIds = ArrayUtils.nullToEmpty(body.get("argumentId"));
         Map<String, String> serviceArguments = new HashMap<String, String>();
+
         for (int i = 0; i < argumentIds.length; i++) {
             serviceArguments.put(argumentIds[i], arguments[i]);
         }
@@ -204,14 +211,17 @@ public class Issues extends Controller {
         issue.setArguments(serviceArguments);
 
         if (body.get("close") != null) {
-            issue.processingState = IssueProcessingState.CLOSED;
-            issue.closeDate = new Date();
+            issue.closeAction();
         }
         String[] comments = body.get("comment");
-        if (comments != null && comments.length > 0) {
+        if (ArrayUtils.isNotEmpty(comments)) {
             issue.comment = comments[0];
         }
-        RepositoryFactory.getRepository().save(issue);
+        Repository.getInstance().save(issue);
+    }
+
+    public static Result getChoicePage() {
+        return ok(index.render());
     }
 
     public static void filterIssuesForState(List<Issue> requestedIssues, IssuesOverviewState state) {

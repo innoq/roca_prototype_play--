@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import play.libs.F.Option;
 import play.mvc.QueryStringBindable;
-import repository.RepositoryFactory;
+import repository.Repository;
 
 /**
  * Ermoeglicht die Filterung einer Menge von Issues nach einer Kombination von
@@ -214,7 +214,7 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
 
     @Override
     public Option<SelectionFilter> bind(String key, Map<String, String[]> queryString) {
-        List<Issue> issues = RepositoryFactory.getRepository().getAll();
+        List<Issue> issues = Repository.getInstance().getAll();
         return Option.Some(SelectionFilter.create(issues, queryString));
     }
 

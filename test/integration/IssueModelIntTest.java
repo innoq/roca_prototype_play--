@@ -9,9 +9,8 @@ import models.Issue;
 
 import org.junit.Test;
 
-import repository.RepositoryFactory;
-
 import com.avaje.ebean.Ebean;
+import repository.Repository;
 
 public class IssueModelIntTest extends PlayBaseTest {
 
@@ -29,7 +28,7 @@ public class IssueModelIntTest extends PlayBaseTest {
 		Issue errorIssue = TestUtil.createDummyIssue(2L);
 		Ebean.save(errorIssue);
 
-		List<Issue> allIssues = RepositoryFactory.getRepository().getAll();
+		List<Issue> allIssues = Repository.getInstance().getAll();
 		assertEquals(allIssues.get(0), errorIssue);
 	}
 
@@ -39,7 +38,7 @@ public class IssueModelIntTest extends PlayBaseTest {
 		Issue issue = TestUtil.createDummyIssue(3L);
 		Ebean.save(issue);
 
-		List<Issue> allIssues = RepositoryFactory.getRepository().getAll();
+		List<Issue> allIssues = Repository.getInstance().getAll();
 
 		assertSame(allIssues.size(), 1);
 		Issue dbIssue = allIssues.get(0);
