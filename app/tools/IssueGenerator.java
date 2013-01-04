@@ -45,8 +45,8 @@ public final class IssueGenerator {
     private static String[] VERSIONS = {"1.0", "1.2", "1.1", "2.0.1", "2.0.12232", "3.1", "3.2.1", "1.6.8"};
     private static String[] PROJECT_NAMES = {"WAHN III", "ROCKET", "IMPROVE", "DISCOVER", "MAGENTA", "SENATOR", "ROCA"};
     private static String[] PRIORITIES = {"HIGH", "URGENT", "CRASH", "LOW", "MEDIUM", "VERY VERY LOW", "MEDIUM HIGH", "MEDIUM LOW"};
-    private static final String[][] argumentNameLists = {{"einArgmuent", "nochEinArgument"},
-        {"dasErsteArgument", "dasZweiteArgument", "dasDritteArgument"}, {}, {"einEimsamesArgument"}};
+    private static final String[][] argumentNameLists = {{"oneArgument", "anOtherArgument"},
+        {"firstArgument", "secondArgument", "thirdArgument"}, {}, {"oneLonelyArgument"}};
 
     private IssueGenerator() {
         super();
@@ -242,7 +242,7 @@ public final class IssueGenerator {
 
     private static String createExceptionStackTrace() {
         try {
-            throw new RuntimeException("Ein Systemfehler ist aufgetreten. Booten Sie das Universum.");
+            throw new RuntimeException("A system error occurred. Please restart the universe.");
         } catch (final Exception exception) {
 
             final Writer stringWriter = new StringWriter();

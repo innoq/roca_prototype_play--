@@ -4,8 +4,8 @@ function init_dom(context) {
 	$('.multiselect', context).each(function() {
 		$(this).multiselect({
 			selectedList: 2,
-			checkAllText: "Alle",
-			uncheckAllText: "Keinen"
+			checkAllText: "All",
+			uncheckAllText: "None"
 		}).multiselectfilter({label:"", width:"200px"});
 	});
 	// wenn es die filter_updater Komponente gibt, dann wird sie hier eingebunden

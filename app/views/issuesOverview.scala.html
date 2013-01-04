@@ -70,10 +70,10 @@
             </tbody>
         </table>
         @if(issues.size() != 0 && context.isStateOpen()) {
-            <button class="btn">&Uuml;bernehmen</button>
+            <button class="btn">Assign to me</button>
         </form>
         } @if(issues.size() != 0 && context.isStateAssignedCurrentUser()) {
-        <button class="btn">Issue schließen</button>
+        <button class="btn">Close issue</button>
     </form>
     }
         @if(context.isFilterable) {

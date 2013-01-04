@@ -47,16 +47,16 @@
             @issue.exceptionStackTrace
             </pre>
         } else {
-            nicht vorhanden
+            not available
         }
         <hr />
 
 
         <input type="hidden" value="PUT" name="_method"/>
-            <h4>Zusatzparameter</h4>
+            <h4>Additional Information</h4>
             <fieldset>
             @if(issue.arguments.size() > 0) {
-                nicht vorhanden
+                not available
             } else {
                 @for(a <-
                 issue.arguments) {
@@ -67,7 +67,7 @@
                         <div class="controls">
                             <textarea form="putForm" class="input-xxlarge" name="argument"
                             rows="@controllers.Issues.countLines(a.arguments)"
-                                @if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)) {
+                                @if(!issue.isAssignedToCurrentUser(actions.AuthenticationAction.getCurrentUserName)) {
                                     readonly
                                 } > @a.arguments
                             </textarea>
@@ -78,18 +78,18 @@
             </fieldset>
         <hr />
             <div class="control-group">
-                <label class="control-label">Kommentar</label>
+                <label class="control-label">Comment</label>
                 <div class="controls">
                     <textarea form="putForm" class="input-xxlarge" name="comment"
                     rows="@controllers.Issues.countLines(issue.comment)"
-                        @if(!issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)) {
+                        @if(!issue.isAssignedToCurrentUser(actions.AuthenticationAction.getCurrentUserName)) {
                             readonly
                         } > @issue.comment
                     </textarea>
                 </div>
             </div>
 
-            @if(issue.isAssignedToCurrentUser(actions.AuthentificationAction.getCurrentUserName)) {
+            @if(issue.isAssignedToCurrentUser(actions.AuthenticationAction.getCurrentUserName)) {
                 <div class="form-actions">
                     <button form="putForm" summary="submit" name="close"
                     class="btn btn-primary">

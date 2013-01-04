@@ -11,8 +11,7 @@ import java.util.List;
 
 
 /**
- * Play Global Objekt zum bootstrapping der Anwendung. Kuemmert sich aktuell vor
- * allem um das Initialisieren des Repositories.
+ * Play global setting object for bootstrapping the app. Main concern is the initial charging of the repository.
  */
 public class Global extends GlobalSettings {
 

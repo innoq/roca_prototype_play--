@@ -5,17 +5,17 @@ public enum IssueProcessingState {
 	/**
 	 * Der Issue ist noch keinem Bearbeiter zugeordnet.
 	 */
-	OPEN("offen"),
+	OPEN("open"),
 
 	/**
 	 * Der Issue ist einem Berabeiter zugeordnet.
 	 */
-	CLAIMED("zugeordnet"),
+	CLAIMED("claimed"),
 
 	/**
 	 * Die Bearbeitung des Issue wurde abgeschlossen.
 	 */
-	CLOSED("abgeschlossen");
+	CLOSED("closed");
 
 	private final String description;
 

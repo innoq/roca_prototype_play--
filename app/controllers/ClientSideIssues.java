@@ -1,91 +1,94 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import models.Issue;
 import org.apache.commons.lang3.ArrayUtils;
 import play.mvc.Controller;
 import play.mvc.Result;
 import repository.Repository;
-import views.html.clientSideLogicScripts;
-import views.html.issueDetail;
-import views.html.issuesClosing;
-import views.html.issuesClosingError;
-import views.html.issuesOverview;
-import views.html.main;
+import views.html.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * ClientSideIssues is the main controller for the app if the logic reside on the clientside by JS-components.
+ *
+ * TODO: actually the clientside and serverside implementation results in two different controllers on different uris. A perhaps better implementation is to combine the controllers and endpoint. The clientside implementation could be reached by providing a different unobstrusive js component.
+ *
+ */
 public class ClientSideIssues extends Controller {
 
-	public static Result getClientSideOverview(IssueOverviewStateBinder binder) {
+    public static Result getClientSideOverview(IssueOverviewStateBinder binder) {
 
-		List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAllIssues());
-		IssuesOverviewState state = binder.getState();
+        List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAllIssues());
+        IssuesOverviewState state = binder.getState();
 
-		Issues.filterIssuesForState(requestedIssues, state);
+        Issues.filterIssuesForState(requestedIssues, state);
 
-		ClientSideLogicContext context = new ClientSideLogicContext(
-				binder.getState());
-		return ok(main.render(context,
-				issuesOverview.render(requestedIssues, context),
-				clientSideLogicScripts.render()));
-	}
+        ClientSideLogicContext context = new ClientSideLogicContext(
+                binder.getState());
+        return ok(main.render(context,
+                issuesOverview.render(requestedIssues, context),
+                clientSideLogicScripts.render()));
+    }
 
-	public static Result getClientSideOverviewPage() {
-		return ok();
-	}
+    public static Result getClientSideOverviewPage() {
+        return ok();
+    }
 
-	public static Result closeIssues() {
-		Issues.doCloseIssues();
-		return redirect(routes.ClientSideIssues
-				.getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
-	}
+    public static Result closeIssues() {
+        Issues.doCloseIssues();
+        return redirect(routes.ClientSideIssues
+                .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
+    }
 
-	public static Result issuesClosing() {
+    public static Result issuesClosing() {
 
-		Map<String, String[]> queryString = request().queryString();
-		List<String> ids = Arrays.asList(ArrayUtils.nullToEmpty(queryString
-				.get("issueId")));
+        Map<String, String[]> queryString = request().queryString();
+        List<String> ids = Arrays.asList(ArrayUtils.nullToEmpty(queryString
+                .get("issueId")));
 
-		Context context = new ClientSideLogicContext(
-				IssuesOverviewState.ASSIGNED_CURRENT_USER);
-		return (ids.size() == 0) ? ok(main.render(context,
-				issuesClosingError.render(context),
-				clientSideLogicScripts.render())) : ok(main.render(context,
-				issuesClosing.render(ids, context),
-				clientSideLogicScripts.render()));
-	}
+        Context context = new ClientSideLogicContext(
+                IssuesOverviewState.ASSIGNED_CURRENT_USER);
+        return (ids.size() == 0) ? ok(main.render(context,
+                issuesClosingError.render(context),
+                clientSideLogicScripts.render())) : ok(main.render(context,
+                issuesClosing.render(ids, context),
+                clientSideLogicScripts.render()));
+    }
 
-	public static Result unassignIssue() {
+    public static Result unassignIssue() {
 
-		Issues.doUnassignIssue();
-		return redirect(routes.ClientSideIssues
-				.getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
-	}
+        Issues.doUnassignIssue();
+        return redirect(routes.ClientSideIssues
+                .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
+    }
 
-	public static Result assignIssueToUser(String userName) {
+    public static Result assignIssueToUser(String userName) {
 
-		Issues.doAssignIssueToUser(userName);
-		return redirect(routes.ClientSideIssues
-				.getClientSideOverview(IssueOverviewStateBinder.OPEN));
-	}
+        Issues.doAssignIssueToUser(userName);
+        return redirect(routes.ClientSideIssues
+                .getClientSideOverview(IssueOverviewStateBinder.OPEN));
+    }
 
-	public static Result getIssue(int id) {
-		Issue currentIssue = Repository.getInstance()
-				.findIssueById(id);
+    public static Result getIssue(int id) {
+        Issue currentIssue = Repository.getInstance()
+                .findIssueById(id);
 
-		ClientSideLogicContext context = new ClientSideLogicContext(
-				IssuesOverviewState.getByIssue(currentIssue));
-		return ok(main.render(context,
-				issueDetail.render(currentIssue, context),
-				clientSideLogicScripts.render()));
-	}
+        ClientSideLogicContext context = new ClientSideLogicContext(
+                IssuesOverviewState.getByIssue(currentIssue));
+        return ok(main.render(context,
+                issueDetail.render(currentIssue, context),
+                clientSideLogicScripts.render()));
+    }
 
-	public static Result updateIssue(int id) {
+    public static Result updateIssue(int id) {
 
-		Issues.doUpdateIssue(id);
-		return redirect(routes.ClientSideIssues
-				.getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
-	}
+        Issues.doUpdateIssue(id);
+        return redirect(routes.ClientSideIssues
+                .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
+    }
 }

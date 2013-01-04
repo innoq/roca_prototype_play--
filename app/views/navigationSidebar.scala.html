@@ -6,23 +6,23 @@
     class="active"
 } @if(context.isStateAssignedCurrentUser()) {
     data-targetUriBase=" @context.getUnassignIssueUri()
-    "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.OPEN)">Offene Fehler</a> </li>
+    "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.OPEN)">Open issues</a> </li>
     <li @if(context.isStateAssignedCurrentUser()) {
         class="active"} @if(context.isStateOpen()) {
         data-targetUriBase=" @context.getAssignIssueUri()
         "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER)">
-            Mir zugeordnete Fehler
+            Assigned to me
         </a> </li>
         <li
             @if(context.isStateAssignedOtherUser()) {
                 class="active"} > <a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_OTHERS)">
-            Anderen zugeordnete Fehler
+            Assigned to others
         </a>
         </li>
         <li
             @if(context.isStateClosed()) {
                 class="active"} > <a href="@context.getOverviewUriForState(IssuesOverviewState.CLOSED)">
-            Abgeschlossene Fehler
+            Closed issues
         </a>
         </li>
     </ul>

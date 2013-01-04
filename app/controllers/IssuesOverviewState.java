@@ -1,6 +1,6 @@
 package controllers;
 
-import actions.AuthentificationAction;
+import actions.AuthenticationAction;
 import models.Issue;
 import models.IssueProcessingState;
 
@@ -14,7 +14,7 @@ public enum IssuesOverviewState {
 
 		@Override
 		public String unbind() {
-			return "issues/claimed/" + AuthentificationAction.getCurrentUserName() + "/assigned";
+			return "issues/claimed/" + AuthenticationAction.getCurrentUserName() + "/assigned";
 		}
 
 	}
@@ -24,7 +24,7 @@ public enum IssuesOverviewState {
 
 		@Override
 		public String unbind() {
-			return "issues/claimed/" + AuthentificationAction.getCurrentUserName() + "/notassigned";
+			return "issues/claimed/" + AuthenticationAction.getCurrentUserName() + "/notassigned";
 		}
 
 	};
@@ -48,9 +48,9 @@ public enum IssuesOverviewState {
 			return OPEN;
 		} else if (issue.isClosed()) {
 			return CLOSED;
-		} else if (issue.isAssignedToCurrentUser(AuthentificationAction.getCurrentUserName())) {
+		} else if (issue.isAssignedToCurrentUser(AuthenticationAction.getCurrentUserName())) {
 			return ASSIGNED_CURRENT_USER;
-		} else if (issue.isAssignedToOtherUser(AuthentificationAction.getCurrentUserName())) {
+		} else if (issue.isAssignedToOtherUser(AuthenticationAction.getCurrentUserName())) {
 			return ASSIGNED_OTHERS;
 		}
 

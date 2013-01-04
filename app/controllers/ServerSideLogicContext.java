@@ -1,6 +1,6 @@
 package controllers;
 
-import actions.AuthentificationAction;
+import actions.AuthenticationAction;
 import userselection.PaginationFilter;
 import userselection.PartialSorting;
 import userselection.PartialSorting.SortDirection;
@@ -8,6 +8,10 @@ import userselection.PartialSorting.SortableAttribute;
 import userselection.SelectionFilter;
 import play.mvc.Call;
 
+
+/**
+ *  Template context for the serverside logic implementation.
+ */
 public class ServerSideLogicContext implements Context{
 
 	private final PaginationFilter paginationFilter;
@@ -73,7 +77,7 @@ public class ServerSideLogicContext implements Context{
 	@Override
 	public Call getAssignIssueUri() {
 		return routes.Issues.assignIssueToUser(
-				AuthentificationAction.getCurrentUserName(), partialSorting,
+				AuthenticationAction.getCurrentUserName(), partialSorting,
 				paginationFilter, selectionFilter);
 	}
 

@@ -5,16 +5,16 @@ public enum ExecutionAction {
 	/**
 	 * Die Execution soll wieder neu eingestellt werden
 	 */
-	RETRY("Ausfuehrung wiederholen"),
+	RETRY("retry execution"),
 
 	/**
 	 * Die Execution soll abgebrochen werden
 	 */
-	ABORT("Ausfuehrung abbrechen"),
+	ABORT("abort execution"),
 	/**
 	 * Die Execution soll beendet werden
 	 */
-	COMPLETE("Ausfuehrung beenden");
+	COMPLETE("complete execution");
 
 	private ExecutionAction(String description) {
 	}

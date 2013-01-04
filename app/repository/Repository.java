@@ -10,8 +10,8 @@ import play.db.ebean.Model;
 import tools.IssueGenerator;
 
 /**
- * Ein {@link Repository} haelt alle Model Objekte in einer in memory
- * Datenstruktur.
+ * Repository for the users and issues. Implemented with a simple in memory map.
+ *
  */
 public final class Repository {
 

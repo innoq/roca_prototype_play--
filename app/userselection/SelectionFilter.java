@@ -1,14 +1,5 @@
 package userselection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import models.Issue;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -20,56 +11,15 @@ import play.libs.F.Option;
 import play.mvc.QueryStringBindable;
 import repository.Repository;
 
+import java.util.*;
+
 /**
- * Ermoeglicht die Filterung einer Menge von Issues nach einer Kombination von
- * Attribut Werten.
- *
- * Ein {@link SelectionFilter} ist sein eigenes Bindable, da Play 2 nur self
- * recursive types als bindables unterstuetzt.
- *
+ * Provides a filter function for a quantity of issues by specific user selections. Also stores all possible selection criteria.
+ * </p>
+ * A SelectionFilter is its own bindable, because play 2 only supports self recursive types as bindables
  */
 public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
 
-    private final class MatchesRelevantAttributesPredicate implements Predicate {
-
-        @Override
-        public boolean evaluate(Object arg0) {
-            Issue issue = (Issue) arg0;
-            boolean matches = true;
-
-            String project = issue.projectName;
-            String component = issue.componentName;
-            String issueType = issue.issueType;
-            String reporter = issue.reporter;
-            String assignedUser = (issue.assignedUser == null) ? null : issue.assignedUser.name;
-
-            matches &= attributeIsRelevantAndContainsValue(selectedProjects, project);
-            matches &= attributeIsRelevantAndContainsValue(selectedComponents, component);
-            matches &= attributeIsRelevantAndContainsValue(selectedIssueTypes, issueType);
-            matches &= attributeIsRelevantAndContainsValue(selectedReporters, reporter);
-            matches &= attributeIsRelevantAndContainsValue(selectedAssignedUsers, assignedUser);
-
-            return matches;
-        }
-
-        private final boolean attributeIsRelevantAndContainsValue(Collection<String> selectedAttributes, String value) {
-            return selectedAttributes.isEmpty() || selectedAttributes.contains(value);
-        }
-    }
-
-    public static enum FilterableAttributes {
-
-        ID("id"), ASSIGENED_USER("assignedUser"), COMPONENT("component"), REPORTER("reporter"), PROJECT("project"), ISSUE_TYPE("issueType");
-        private final String queryParam;
-
-        private FilterableAttributes(String queryParam) {
-            this.queryParam = queryParam;
-        }
-
-        public String getQueryParam() {
-            return queryParam;
-        }
-    }
     private Set<String> allIds = new TreeSet<String>();
     private Set<String> allReporters = new TreeSet<String>();
     private Set<String> allAssignedUsers = new TreeSet<String>();
@@ -82,28 +32,32 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
     private Set<String> selectedComponents = new HashSet<String>();
     private Set<String> selectedIssueTypes = new HashSet<String>();
 
-    public void setAllIds(Set<String> allIds) {
-        this.allIds = new TreeSet<String>(allIds);
+    @SuppressWarnings("unchecked")
+    private final static Set<String> createNotNullSet() {
+        return SetUtils.predicatedSet(new HashSet<String>(), NotNullPredicate.getInstance());
     }
 
-    public void setAllReporters(Collection<String> allReporters) {
-        this.allReporters = new TreeSet<String>(allReporters);
-    }
+    public static SelectionFilter create(List<Issue> issues, Map<String, String[]> queryString) {
 
-    public void setAllAssignedUsers(Collection<String> allAssignedUsers) {
-        this.allAssignedUsers = new TreeSet<String>(allAssignedUsers);
-    }
+        final List<String> selectedAssignedUsers = (queryString.get(FilterableAttributes.ASSIGENED_USER.getQueryParam()) == null) ? Collections
+                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.ASSIGENED_USER.getQueryParam()));
+        final List<String> selectedComponents = (queryString.get(FilterableAttributes.COMPONENT.getQueryParam()) == null) ? Collections
+                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.COMPONENT.getQueryParam()));
+        final List<String> selectedReporters = (queryString.get(FilterableAttributes.REPORTER.getQueryParam()) == null) ? Collections
+                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.REPORTER.getQueryParam()));
+        final List<String> selectedProjects = (queryString.get(FilterableAttributes.PROJECT.getQueryParam()) == null) ? Collections
+                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.PROJECT.getQueryParam()));
+        final List<String> selectedIssueTypes = (queryString.get(FilterableAttributes.ISSUE_TYPE.getQueryParam()) == null) ? Collections
+                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.ISSUE_TYPE.getQueryParam()));
 
-    public void setAllProjects(Collection<String> allProjects) {
-        this.allProjects = new TreeSet<String>(allProjects);
-    }
+        SelectionFilter selectionFilter = new SelectionFilter();
+        selectionFilter.setSelectedAssignedUsers(selectedAssignedUsers);
+        selectionFilter.setSelectedComponents(selectedComponents);
+        selectionFilter.setSelectedProjects(selectedProjects);
+        selectionFilter.setSelectedReporters(selectedReporters);
+        selectionFilter.setSelectedIssueTypes(selectedIssueTypes);
 
-    public void setAllComponents(Collection<String> allComponents) {
-        this.allComponents = new TreeSet<String>(allComponents);
-    }
-
-    public void setAllIssueTypes(Collection<String> allIssueTypes) {
-        this.allIssueTypes = new TreeSet<String>(allIssueTypes);
+        return selectionFilter;
     }
 
     public void setSelectedReporters(Collection<String> selectedReporters) {
@@ -130,24 +84,48 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
         return new ArrayList<String>(allIds);
     }
 
+    public void setAllIds(Set<String> allIds) {
+        this.allIds = new TreeSet<String>(allIds);
+    }
+
     public List<String> getAllReporters() {
         return new ArrayList<String>(allReporters);
+    }
+
+    public void setAllReporters(Collection<String> allReporters) {
+        this.allReporters = new TreeSet<String>(allReporters);
     }
 
     public List<String> getAllAssignedUsers() {
         return new ArrayList<String>(allAssignedUsers);
     }
 
+    public void setAllAssignedUsers(Collection<String> allAssignedUsers) {
+        this.allAssignedUsers = new TreeSet<String>(allAssignedUsers);
+    }
+
     public List<String> getAllProjects() {
         return new ArrayList<String>(allProjects);
+    }
+
+    public void setAllProjects(Collection<String> allProjects) {
+        this.allProjects = new TreeSet<String>(allProjects);
     }
 
     public List<String> getAllComponents() {
         return new ArrayList<String>(allComponents);
     }
 
+    public void setAllComponents(Collection<String> allComponents) {
+        this.allComponents = new TreeSet<String>(allComponents);
+    }
+
     public List<String> getAllIssueTypes() {
         return new ArrayList<String>(allIssueTypes);
+    }
+
+    public void setAllIssueTypes(Collection<String> allIssueTypes) {
+        this.allIssueTypes = new TreeSet<String>(allIssueTypes);
     }
 
     public boolean isSelectedProject(String project) {
@@ -168,11 +146,6 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
 
     public boolean isSelectedUser(String userName) {
         return selectedAssignedUsers.contains(userName);
-    }
-
-    @SuppressWarnings("unchecked")
-    private final static Set<String> createNotNullSet() {
-        return SetUtils.predicatedSet(new HashSet<String>(), NotNullPredicate.getInstance());
     }
 
     public void filterIssues(Collection<Issue> issues) {
@@ -243,26 +216,44 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
         throw new UnsupportedOperationException("JavaScript unbind is not supported!");
     }
 
-    public static SelectionFilter create(List<Issue> issues, Map<String, String[]> queryString) {
+    public static enum FilterableAttributes {
 
-        final List<String> selectedAssignedUsers = (queryString.get(FilterableAttributes.ASSIGENED_USER.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.ASSIGENED_USER.getQueryParam()));
-        final List<String> selectedComponents = (queryString.get(FilterableAttributes.COMPONENT.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.COMPONENT.getQueryParam()));
-        final List<String> selectedReporters = (queryString.get(FilterableAttributes.REPORTER.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.REPORTER.getQueryParam()));
-        final List<String> selectedProjects = (queryString.get(FilterableAttributes.PROJECT.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.PROJECT.getQueryParam()));
-        final List<String> selectedIssueTypes = (queryString.get(FilterableAttributes.ISSUE_TYPE.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.ISSUE_TYPE.getQueryParam()));
+        ID("id"), ASSIGENED_USER("assignedUser"), COMPONENT("component"), REPORTER("reporter"), PROJECT("project"), ISSUE_TYPE("issueType");
+        private final String queryParam;
 
-        SelectionFilter selectionFilter = new SelectionFilter();
-        selectionFilter.setSelectedAssignedUsers(selectedAssignedUsers);
-        selectionFilter.setSelectedComponents(selectedComponents);
-        selectionFilter.setSelectedProjects(selectedProjects);
-        selectionFilter.setSelectedReporters(selectedReporters);
-        selectionFilter.setSelectedIssueTypes(selectedIssueTypes);
+        private FilterableAttributes(String queryParam) {
+            this.queryParam = queryParam;
+        }
 
-        return selectionFilter;
+        public String getQueryParam() {
+            return queryParam;
+        }
+    }
+
+    private final class MatchesRelevantAttributesPredicate implements Predicate {
+
+        @Override
+        public boolean evaluate(Object arg0) {
+            Issue issue = (Issue) arg0;
+            boolean matches = true;
+
+            String project = issue.projectName;
+            String component = issue.componentName;
+            String issueType = issue.issueType;
+            String reporter = issue.reporter;
+            String assignedUser = (issue.assignedUser == null) ? null : issue.assignedUser.name;
+
+            matches &= attributeIsRelevantAndContainsValue(selectedProjects, project);
+            matches &= attributeIsRelevantAndContainsValue(selectedComponents, component);
+            matches &= attributeIsRelevantAndContainsValue(selectedIssueTypes, issueType);
+            matches &= attributeIsRelevantAndContainsValue(selectedReporters, reporter);
+            matches &= attributeIsRelevantAndContainsValue(selectedAssignedUsers, assignedUser);
+
+            return matches;
+        }
+
+        private final boolean attributeIsRelevantAndContainsValue(Collection<String> selectedAttributes, String value) {
+            return selectedAttributes.isEmpty() || selectedAttributes.contains(value);
+        }
     }
 }

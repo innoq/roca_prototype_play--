@@ -14,12 +14,8 @@ import play.libs.F.Option;
 import play.mvc.QueryStringBindable;
 
 /**
- * Ein {@link PaginationFilter} ermoeglicht die Auswahl von Issues fuer die
- * aktuelle anzuzeigende Page.
- *
- * Der Filter ist dabei sein eigenes Bindable und damit praktisch siene eigene
- * Factory ( da Play 2 aktuell nur self recursice types unterstuetzt nicht
- * wirklich zu umgehen).
+ * Provides the selection of the subset of issues which should be displayed on a specific page.
+ * Also stores the overall information of visible pages.
  */
 public class PaginationFilter implements QueryStringBindable<PaginationFilter> {
 
@@ -57,16 +53,14 @@ public class PaginationFilter implements QueryStringBindable<PaginationFilter> {
     }
 
     /**
-     * Liefert alle vom User erreichbaren Seiten zurueck. Jede Seite besteht
-     * dabei aus einem Paar von Seitennummer und dem User anzuzeigenden Text,
-     * z.B. [1,Anfang] fuer die erste Seite.
+     * Returns the quantity of for the user reachable pages by pairs of display names and site numbers.
      *
-     * @return die Menge an fuer den user erreichbaren Seiten.
+     * @return the quantity of reachable sites for the user.
      */
     public List<Pair<String, Integer>> getVisiblePages() {
 
-        Pair<String, Integer> endPair = Pair.of("Ende", maxPage);
-        Pair<String, Integer> startPair = Pair.of("Anfang", 1);
+        Pair<String, Integer> endPair = Pair.of("Last", maxPage);
+        Pair<String, Integer> startPair = Pair.of("First", 1);
         List<Pair<String, Integer>> visiblePages = new ArrayList<Pair<String, Integer>>();
 
         if (pageNumber == 1) {

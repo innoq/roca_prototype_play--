@@ -1,6 +1,6 @@
 package controllers;
 
-import actions.AuthentificationAction;
+import actions.AuthenticationAction;
 import play.mvc.Call;
 
 public class ClientSideLogicContext implements Context{
@@ -19,7 +19,7 @@ public class ClientSideLogicContext implements Context{
 
 	@Override
 	public Call getAssignIssueUri() {
-		return routes.ClientSideIssues.assignIssueToUser(AuthentificationAction.getCurrentUserName());
+		return routes.ClientSideIssues.assignIssueToUser(AuthenticationAction.getCurrentUserName());
 	}
 
 	@Override

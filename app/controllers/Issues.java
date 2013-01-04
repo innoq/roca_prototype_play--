@@ -1,20 +1,16 @@
 package controllers;
 
-import actions.AuthentificationAction;
+import actions.AuthenticationAction;
 import models.Issue;
 import models.IssueProcessingState;
 import models.User;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.ArrayUtils;
-import play.api.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
 import repository.Repository;
-import scala.None$;
-import scala.Option;
-import tools.IssueGenerator;
 import userselection.PaginationFilter;
 import userselection.PartialSorting;
 import userselection.SelectionFilter;
@@ -23,12 +19,9 @@ import views.html.*;
 import java.util.*;
 
 /**
- * Controller fuer die Anwendung. Das Mapping der Controller-Methoden auf die
- * HTTP Methoden und Uris erfolgt im routes file.
- * <p/>
- * Content Negotiation und Validierung werden aktuell nicht unterstuetzt.
+ * Main controller for the serverside logic implementation.
  */
-@With(AuthentificationAction.class)
+@With(AuthenticationAction.class)
 public class Issues extends Controller {
 
     public static Result assignIssueToUser(String userName, PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
@@ -48,10 +41,9 @@ public class Issues extends Controller {
     }
 
     /**
-     * Schliesst die Menge an uebergebenen Issues und updatet die fuer den User
-     * aktuelle Page ueber einen redirect.
+     * Closes all delivered issues and updates the view.
      *
-     * @return redirect auf die aktuelle Page des Users.
+     * @return redirect to update the view.
      */
     public static Result closeIssues() {
 
@@ -60,6 +52,9 @@ public class Issues extends Controller {
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
+    /**
+     * Extracted closing logic. Could be reused by the clientside logic controller.
+     */
     static void doCloseIssues() {
         Map<String, String[]> body = request().body().asFormUrlEncoded();
         String[] ids = body.get("issueId");
@@ -74,21 +69,25 @@ public class Issues extends Controller {
         }
     }
 
+    /**
+     *  Count the minimal number of lines a textarea should provide to display the given string.
+     *
+     * @param string the string to display
+     * @return the number of lines to display
+     */
     public static int countLines(final String string) {
         return string == null ? 5 : Math.max(5, string.split(System.getProperty("line.separator")).length);
     }
 
     /**
-     * Liefert eine Repraesentation aller Issues zurueck die den uebergebenen
-     * Parametern entsprechen.
+     * Returns an overview page of all issues which corresponds to the given user selection criteria.
      *
-     * @param sorting     die Sortierung fuer die Issues.
-     * @param pagination  das angeforderte Subset von Issues.
-     * @param filter      die Menge an Filterkriterien die ein zurueckgeliefertes
-     *                    Issue erfuellen muss.
-     * @param stateBinder schrenkt die Ergebnismenge aufgrund des Issue states
-     *                    ein.
-     * @return die Repraesentation der angeforderten Issues.
+     * @param sorting     specification for the sorting order.
+     * @param pagination  specification for the requested page.
+     * @param filter      quantity of filter criteria a specific issue must satisfy to be displayed.
+     * @param stateBinder the requested state.
+     *
+     * @return the overview page.
      */
     public static Result getAllIssues(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter,
                                       IssueOverviewStateBinder stateBinder) {
@@ -109,10 +108,10 @@ public class Issues extends Controller {
     }
 
     /**
-     * Gibt eine Repraesentation des Issues fuer die uebergebene id zurueck.
+     * Returns a detailed html representation of a single issue.
      *
-     * @param id die Id des angeforderten Issues.
-     * @return die Repruesentation des Issues.
+     * @param id the id of the requested issue.
+     * @return a detailed issue representation.
      */
     public static Result getIssue(int id) {
         Issue currentIssue = Repository.getInstance().findIssueById(id);
@@ -122,10 +121,8 @@ public class Issues extends Controller {
     }
 
     /**
-     * Liefert die Root Page der Anwendung zurueck. Aktuell ein redirect auf die
-     * Repraesentation der offenen Issues.
-     *
-     * @return die Repraesentation der Root Page.
+     * Returns the root page of the app. Actually a redirect to the general overview page.
+     * @return the root page.
      */
     public static Result getRoot() {
         return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
@@ -133,10 +130,11 @@ public class Issues extends Controller {
     }
 
     /**
-     * Gibt eine Repraesentation des Closing Prozesses zurueck.
+     * Returns a representation of the closing process.
+     *
+     * TODO: renaming
      */
     public static Result issuesClosing() {
-
         Map<String, String[]> queryString = request().queryString();
         List<String> ids = Arrays.asList(ArrayUtils.nullToEmpty(queryString.get("issueId")));
 
@@ -145,8 +143,15 @@ public class Issues extends Controller {
     }
 
     /**
-     * Entfernt die Zuweisung der Issues zu dem User. Die Issues gelten damit
-     * wieder als OPEN.
+     * Unassigned an issues and changes the issue state to open. Updates the overview page by redirecting.
+     *
+     * @param sorting     specification for the sorting order.
+     * @param pagination  specification for the requested page.
+     * @param filter      quantity of filter criteria a specific issue must satisfy to be displayed.
+     *
+     * @return the updated overview page represantation
+     *
+     * TODO: rename in removeIssueAssignment
      */
     public static Result unassignIssue(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
 
@@ -154,6 +159,11 @@ public class Issues extends Controller {
         return redirect(routes.Issues.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
+    /**
+     * Extracted closing logic. Could be reused by the clientside logic controller.
+     *
+     * TODO: rename in doRemoveIssueAssignment
+     */
     static void doUnassignIssue() {
         Map<String, String[]> body = request().body().asFormUrlEncoded();
         String id = body.get("issueId")[0];
@@ -163,8 +173,10 @@ public class Issues extends Controller {
     }
 
     /**
-     * Updatet den uebergebenen Issue und updatet die aktuelle Page des Users
-     * ueber einen Redirect.
+     * Updates the specified issue and updates the view.
+     *
+     * @param id of the issue to update
+     * @return the updated issue html represantation
      */
     public static Result updateIssue(int id) {
 
@@ -174,6 +186,11 @@ public class Issues extends Controller {
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
+
+    /**
+     * Extracted update logic. Could be reused by the clientside logic controller.
+     *
+     */
     static void doUpdateIssue(int id) {
         Issue issue = Repository.getInstance().findIssueById(id);
         Map<String, String[]> body = request().body().asFormUrlEncoded();
@@ -198,11 +215,16 @@ public class Issues extends Controller {
         Repository.getInstance().save(issue);
     }
 
+    /**
+     * Return a page wherer the user could decide between the serveside or clientside implementation.
+     *
+     * @return the page.
+     */
     public static Result getChoicePage() {
         return ok(index.render());
     }
 
-    public static void filterIssuesForState(List<Issue> requestedIssues, IssuesOverviewState state) {
+     static void filterIssuesForState(List<Issue> requestedIssues, IssuesOverviewState state) {
 
         switch (state) {
             case ALL:
@@ -229,7 +251,7 @@ public class Issues extends Controller {
         @Override
         public boolean evaluate(Object arg0) {
             Issue issue = (Issue) arg0;
-            return issue.isAssignedToCurrentUser(AuthentificationAction.getCurrentUserName());
+            return issue.isAssignedToCurrentUser(AuthenticationAction.getCurrentUserName());
         }
     }
 
@@ -238,7 +260,7 @@ public class Issues extends Controller {
         @Override
         public boolean evaluate(Object arg0) {
             Issue issue = (Issue) arg0;
-            return issue.isAssignedToOtherUser(AuthentificationAction.getCurrentUserName());
+            return issue.isAssignedToOtherUser(AuthenticationAction.getCurrentUserName());
         }
     }
 

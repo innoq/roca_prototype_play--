@@ -1,134 +1,122 @@
 package userselection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
 import models.Issue;
-
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
-
 import play.libs.F.Option;
 import play.mvc.QueryStringBindable;
 
+import java.util.*;
+
 /**
- * Ermoeglicht eine partielle Sortierung einer Menge von Issues. Die Sortierung
- * kann dabei jeweils ueber Attribute von issues erfolgen die gewichtet werdne
- * koennen. Weiterhin ist fuer jedes Attribut eine eigene Sortierrichtung
- * (ASCENDING vs. DESCENDING) moeglich.
- * 
- * Ein {@link PartialSorting} ist sein eigenes Bindable, da Play 2 nur self
- * recursive types als bindables unterstuetzt.
+ * Provides a partial sorting function for a quantity of issues by their attributes. Every sorting attribute could be weighted.
+ * Higher weighted attributes are preferred for lower weighted. ALso the sorting direction (ascending vs. descending) could be specified per attribute.
+ * <p/>
+ * A PartialSorting is is own bindable, because play 2 only supports sef recursive bindable types.
+ * <p/>
+ *
  */
 public class PartialSorting implements QueryStringBindable<PartialSorting> {
 
-	public static enum SortableAttribute {
-			ID("id"),
-			PROJECT("projectName"),
-			OPEN_DATE("openDate"),
-			CLOSE_DATE("closeDate"),
-			REPORTER("reporter"),
-			ASSIGNED_USER("assignedUser"),
-			ISSUE_TYPE("issueType"),
-			COMPONENT("componentName"),
-			SUMMARY("summary"),
-			PRIORITY("priority"),
-			COMPONENT_VERSION("componentVersion"),
-			PROCESSING_STATE("processingState"),
-			DESCRIPTION("description");
+    private List<IssueComparator> comparators = new ArrayList<IssueComparator>();
+    private Comparator<Issue> completeComparator;
+    private String queryStringKey;
 
-		private final String issueAttribute;
+    public PartialSorting() {
+        super();
+    }
 
-		private SortableAttribute(String issueAttribute) {
-			this.issueAttribute = issueAttribute;
-		}
+    public void sortIssues(List<Issue> issues) {
+        Collections.sort(issues, completeComparator);
+    }
 
-		public String getIssuePropertyName() {
-			return issueAttribute;
-		}
-	}
+    public String getUrlForTopSorting(SortableAttribute attribute, SortDirection ordering) {
 
-	public static enum SortDirection {
-		ASCENDING, DESCENDING
-	}
+        int highestPriority = -1;
+        for (IssueComparator comparator : comparators) {
+            highestPriority = (highestPriority < comparator.getPriority()) ? comparator.getPriority() : highestPriority;
+        }
 
-	private List<IssueComparator> comparators = new ArrayList<IssueComparator>();
+        return new IssueComparator(highestPriority + 1, attribute, ordering).unbind(queryStringKey);
+    }
 
-	private Comparator<Issue> completeComparator;
+    @Override
+    public Option<PartialSorting> bind(String key, Map<String, String[]> data) {
+        String[] params = data.get(key);
+        if (params == null || params.length == 0) {
+            PartialSorting strategy = new PartialSorting();
+            strategy.setComparators(Collections.singletonList(new IssueComparator(1, SortableAttribute.OPEN_DATE, SortDirection.DESCENDING)));
+            strategy.queryStringKey = key;
+            return Option.Some(strategy);
+        }
 
-	private String queryStringKey;
+        List<IssueComparator> comparators = new ArrayList<IssueComparator>();
+        for (String param : params) {
+            String[] sortingParams = param.split(",");
+            comparators.add(new IssueComparator(Integer.parseInt(sortingParams[0]), SortableAttribute.valueOf(sortingParams[1].trim()), SortDirection
+                    .valueOf(sortingParams[2].trim())));
+        }
 
-	public PartialSorting() {
-		super();
-	}
+        PartialSorting strategy = new PartialSorting();
+        strategy.setComparators(comparators);
+        strategy.queryStringKey = key;
+        return Option.Some(strategy);
+    }
 
-	public void sortIssues(List<Issue> issues) {
-		Collections.sort(issues, completeComparator);
-	}
+    public void setComparators(Collection<IssueComparator> comparators) {
+        this.comparators = new ArrayList<IssueComparator>(comparators);
 
-	public String getUrlForTopSorting(SortableAttribute attribute, SortDirection ordering) {
+        TreeSet<IssueComparator> sortedComparators = new TreeSet<IssueComparator>();
+        sortedComparators.addAll(comparators);
+        completeComparator = ComparatorUtils.chainedComparator(sortedComparators);
+    }
 
-		int highestPriority = -1;
-		for (IssueComparator comparator : comparators) {
-			highestPriority = (highestPriority < comparator.getPriority()) ? comparator.getPriority() : highestPriority;
-		}
+    @Override
+    public String unbind(String key) {
 
-		return new IssueComparator(highestPriority + 1, attribute, ordering).unbind(queryStringKey);
-	}
+        if (comparators.isEmpty()) {
+            return key + "=1," + SortableAttribute.OPEN_DATE.name() + "," + SortDirection.DESCENDING.name();
+        }
 
-	@Override
-	public Option<PartialSorting> bind(String key, Map<String, String[]> data) {
-		String[] params = data.get(key);
-		if (params == null || params.length == 0) {
-			PartialSorting strategy = new PartialSorting();
-			strategy.setComparators(Collections.singletonList(new IssueComparator(1, SortableAttribute.OPEN_DATE, SortDirection.DESCENDING)));
-			strategy.queryStringKey = key;
-			return Option.Some(strategy);
-		}
+        List<String> queryParams = new ArrayList<String>();
+        for (IssueComparator comparator : comparators) {
+            queryParams.add(comparator.unbind(key));
+        }
+        return StringUtils.join(queryParams, "&");
+    }
 
-		List<IssueComparator> comparators = new ArrayList<IssueComparator>();
-		for (String param : params) {
-			String[] sortingParams = param.split(",");
-			comparators.add(new IssueComparator(Integer.parseInt(sortingParams[0]), SortableAttribute.valueOf(sortingParams[1].trim()), SortDirection
-					.valueOf(sortingParams[2].trim())));
-		}
+    @Override
+    public String javascriptUnbind() {
+        throw new UnsupportedOperationException("JavaScript unbind is not supported!");
+    }
 
-		PartialSorting strategy = new PartialSorting();
-		strategy.setComparators(comparators);
-		strategy.queryStringKey = key;
-		return Option.Some(strategy);
-	}
+    public static enum SortableAttribute {
+        ID("id"),
+        PROJECT("projectName"),
+        OPEN_DATE("openDate"),
+        CLOSE_DATE("closeDate"),
+        REPORTER("reporter"),
+        ASSIGNED_USER("assignedUser"),
+        ISSUE_TYPE("issueType"),
+        COMPONENT("componentName"),
+        SUMMARY("summary"),
+        PRIORITY("priority"),
+        COMPONENT_VERSION("componentVersion"),
+        PROCESSING_STATE("processingState"),
+        DESCRIPTION("description");
+        private final String issueAttribute;
 
-	public void setComparators(Collection<IssueComparator> comparators) {
-		this.comparators = new ArrayList<IssueComparator>(comparators);
+        private SortableAttribute(String issueAttribute) {
+            this.issueAttribute = issueAttribute;
+        }
 
-		TreeSet<IssueComparator> sortedComparators = new TreeSet<IssueComparator>();
-		sortedComparators.addAll(comparators);
-		completeComparator = ComparatorUtils.chainedComparator(sortedComparators);
-	}
+        public String getIssuePropertyName() {
+            return issueAttribute;
+        }
+    }
 
-	@Override
-	public String unbind(String key) {
-
-		if (comparators.isEmpty()) {
-			return key + "=1," + SortableAttribute.OPEN_DATE.name() + "," + SortDirection.DESCENDING.name();
-		}
-
-		List<String> queryParams = new ArrayList<String>();
-		for (IssueComparator comparator : comparators) {
-			queryParams.add(comparator.unbind(key));
-		}
-		return StringUtils.join(queryParams, "&");
-	}
-
-	@Override
-	public String javascriptUnbind() {
-		throw new UnsupportedOperationException("JavaScript unbind is not supported!");
-	}
+    public static enum SortDirection {
+        ASCENDING, DESCENDING
+    }
 
 }
