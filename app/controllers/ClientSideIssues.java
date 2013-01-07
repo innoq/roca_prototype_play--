@@ -60,7 +60,7 @@ public class ClientSideIssues extends Controller {
 
     public static Result unassignIssue() {
 
-        Issues.doUnassignIssue();
+        Issues.doRenameIssueAssignment();
         return redirect(routes.ClientSideIssues
                 .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }

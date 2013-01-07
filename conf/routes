@@ -32,24 +32,24 @@ POST	/services/clientside/issues/:id								controllers.ClientSideIssues.updateI
 
 # Overview
 GET		/services/issues/											controllers.Issues.getRoot()
-GET     /services/$binder<issues>									controllers.Issues.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
-GET		/services/$binder<issues/open>								controllers.Issues.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
-GET		/services/$binder<issues/claimed/.*/assigned>				controllers.Issues.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
-GET		/services/$binder<issues/claimed/.*/notassigned>			controllers.Issues.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
-GET		/services/$binder<issues/closed>							controllers.Issues.getAllIssues(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET     /services/$binder<issues>									controllers.Issues.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/open>								controllers.Issues.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/claimed/.*/assigned>				controllers.Issues.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/claimed/.*/notassigned>			controllers.Issues.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+GET		/services/$binder<issues/closed>							controllers.Issues.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
 
 # Close issues
-GET		/services/issues/closing									controllers.Issues.issuesClosing()
+GET		/services/issues/closing									controllers.Issues.getIssuesClosingProcess()
 POST	/services/issues/closed										controllers.Issues.closeIssues()
 
 # Open issue
-POST	/services/issues/open										controllers.Issues.unassignIssue(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter)
+POST	/services/issues/open										controllers.Issues.removeIssueAssignment(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter)
 
 # Assign Issue
 POST	/services/issues/claimed/:id/assigned						controllers.Issues.assignIssueToUser(id: String,partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter)
 
 # Single Issue
-GET		/services/issues/:id										controllers.Issues.getIssue(id: Int)
+GET		/services/issues/:id										controllers.Issues.getIssueDetails(id: Int)
 POST	/services/issues/:id										controllers.Issues.updateIssue(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path

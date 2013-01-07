@@ -26,7 +26,7 @@ public class Issues extends Controller {
 
     public static Result assignIssueToUser(String userName, PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
         doAssignIssueToUser(userName);
-        return redirect(routes.Issues.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.OPEN));
+        return redirect(routes.Issues.getIssueOverview(sorting, pagination, filter, IssueOverviewStateBinder.OPEN));
     }
 
     static void doAssignIssueToUser(String userName) {
@@ -48,7 +48,7 @@ public class Issues extends Controller {
     public static Result closeIssues() {
 
         doCloseIssues();
-        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
@@ -70,7 +70,7 @@ public class Issues extends Controller {
     }
 
     /**
-     *  Count the minimal number of lines a textarea should provide to display the given string.
+     * Count the minimal number of lines a textarea should provide to display the given string.
      *
      * @param string the string to display
      * @return the number of lines to display
@@ -86,11 +86,10 @@ public class Issues extends Controller {
      * @param pagination  specification for the requested page.
      * @param filter      quantity of filter criteria a specific issue must satisfy to be displayed.
      * @param stateBinder the requested state.
-     *
      * @return the overview page.
      */
-    public static Result getAllIssues(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter,
-                                      IssueOverviewStateBinder stateBinder) {
+    public static Result getIssueOverview(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter,
+                                          IssueOverviewStateBinder stateBinder) {
 
         List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAllIssues());
         IssuesOverviewState state = stateBinder.getState();
@@ -102,9 +101,9 @@ public class Issues extends Controller {
 
         Uris uris = new ServerSideLogicUris(pagination, filter, sorting);
         if (request().queryString().containsKey("ajax")) {
-            return ok(issuesOverview.render(requestedIssues, uris,state));
+            return ok(issuesOverview.render(requestedIssues, uris, state));
         }
-        return ok(main.render(uris, issuesOverview.render(requestedIssues, uris,state), serverSideLogicScripts.render(),state));
+        return ok(main.render(uris, issuesOverview.render(requestedIssues, uris, state), serverSideLogicScripts.render(), state));
     }
 
     /**
@@ -113,58 +112,55 @@ public class Issues extends Controller {
      * @param id the id of the requested issue.
      * @return a detailed issue representation.
      */
-    public static Result getIssue(int id) {
+    public static Result getIssueDetails(int id) {
         Issue currentIssue = Repository.getInstance().findIssueById(id);
 
         Uris uris = new ServerSideLogicUris(new PaginationFilter(), new SelectionFilter(), new PartialSorting());
-        return ok(main.render(uris, issueDetail.render(currentIssue, uris), serverSideLogicScripts.render(),IssuesOverviewState.getByIssue(currentIssue)));
+        return ok(main.render(uris, issueDetail.render(currentIssue, uris), serverSideLogicScripts.render(), IssuesOverviewState.getByIssue(currentIssue)));
     }
 
     /**
      * Returns the root page of the app. Actually a redirect to the general overview page.
+     *
      * @return the root page.
      */
     public static Result getRoot() {
-        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.OPEN));
     }
 
     /**
      * Returns a representation of the closing process.
-     *
-     * TODO: renaming
      */
-    public static Result issuesClosing() {
+    public static Result getIssuesClosingProcess() {
         Map<String, String[]> queryString = request().queryString();
         List<String> ids = Arrays.asList(ArrayUtils.nullToEmpty(queryString.get("issueId")));
 
         Uris uris = new ServerSideLogicUris(new PaginationFilter(), new SelectionFilter(), new PartialSorting());
-        return (ids.size() == 0) ? ok(main.render(uris, issuesClosingError.render(uris), serverSideLogicScripts.render(),IssuesOverviewState.ASSIGNED_CURRENT_USER)) : ok(main.render(uris, issuesClosing.render(ids, uris), serverSideLogicScripts.render(),IssuesOverviewState.ASSIGNED_CURRENT_USER));
+        return (ids.size() == 0)
+                ? ok(main.render(uris, issuesClosingError.render(uris), serverSideLogicScripts.render(), IssuesOverviewState.ASSIGNED_CURRENT_USER))
+                : ok(main.render(uris, issuesClosing.render(ids, uris), serverSideLogicScripts.render(), IssuesOverviewState.ASSIGNED_CURRENT_USER));
     }
 
     /**
      * Unassigned an issues and changes the issue state to open. Updates the overview page by redirecting.
      *
-     * @param sorting     specification for the sorting order.
-     * @param pagination  specification for the requested page.
-     * @param filter      quantity of filter criteria a specific issue must satisfy to be displayed.
-     *
-     * @return the updated overview page represantation
-     *
-     * TODO: rename in removeIssueAssignment
+     * @param sorting    specification for the sorting order.
+     * @param pagination specification for the requested page.
+     * @param filter     quantity of filter criteria a specific issue must satisfy to be displayed.
+     * @return the updated overview page representation
      */
-    public static Result unassignIssue(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
+    public static Result removeIssueAssignment(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
 
-        doUnassignIssue();
-        return redirect(routes.Issues.getAllIssues(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
+        doRenameIssueAssignment();
+        return redirect(routes.Issues.getIssueOverview(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
     /**
      * Extracted closing logic. Could be reused by the clientside logic controller.
-     *
-     * TODO: rename in doRemoveIssueAssignment
+     * <p/>
      */
-    static void doUnassignIssue() {
+    static void doRenameIssueAssignment() {
         Map<String, String[]> body = request().body().asFormUrlEncoded();
         String id = body.get("issueId")[0];
         Issue issue = Repository.getInstance().findIssueById(Integer.parseInt(id));
@@ -182,14 +178,12 @@ public class Issues extends Controller {
 
         doUpdateIssue(id);
 
-        return redirect(routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
-
     /**
      * Extracted update logic. Could be reused by the clientside logic controller.
-     *
      */
     static void doUpdateIssue(int id) {
         Issue issue = Repository.getInstance().findIssueById(id);
@@ -224,7 +218,7 @@ public class Issues extends Controller {
         return ok(index.render());
     }
 
-     static void filterIssuesForState(List<Issue> requestedIssues, IssuesOverviewState state) {
+    static void filterIssuesForState(List<Issue> requestedIssues, IssuesOverviewState state) {
 
         switch (state) {
             case ALL:

@@ -42,7 +42,7 @@ public class ServerSideLogicUris implements Uris {
 
 
 	public Call getUnassignIssueUri() {
-		return routes.Issues.unassignIssue(partialSorting,
+		return routes.Issues.removeIssueAssignment(partialSorting,
 				paginationFilter, selectionFilter);
 	}
 
@@ -55,12 +55,12 @@ public class ServerSideLogicUris implements Uris {
 
 	@Override
 	public Call getClosingProcessUri() {
-		return routes.Issues.issuesClosing();
+		return routes.Issues.getIssuesClosingProcess();
 	}
 
 	public String getAllIssuesWithNewSortingUri(SortableAttribute attribute,
 			SortDirection direction,IssuesOverviewState state) {
-		return routes.Issues.getAllIssues(partialSorting,
+		return routes.Issues.getIssueOverview(partialSorting,
 				paginationFilter, selectionFilter,
 				IssueOverviewStateBinder.create(state))
 				+ "&"
@@ -68,7 +68,7 @@ public class ServerSideLogicUris implements Uris {
 	}
 
 	public Call getIssuesOverviewUriForPage(int pageNumber,IssuesOverviewState state) {
-		return routes.Issues.getAllIssues(partialSorting,
+		return routes.Issues.getIssueOverview(partialSorting,
 				new userselection.PaginationFilter(pageNumber), selectionFilter,
 				IssueOverviewStateBinder.create(state));
 	}
@@ -80,12 +80,12 @@ public class ServerSideLogicUris implements Uris {
 
 	@Override
 	public Call getOverviewUriForState(IssuesOverviewState state) {
-		return routes.Issues.getAllIssues(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.create(state));
+		return routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.create(state));
 	}
 
 	@Override
 	public Call getUriForIssue(int id) {
-		return routes.Issues.getIssue(id);
+		return routes.Issues.getIssueDetails(id);
 	}
 
 	@Override
