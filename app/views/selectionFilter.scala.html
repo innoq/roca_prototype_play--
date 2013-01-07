@@ -1,4 +1,4 @@
-@(context: ServerSideLogicContext)
+@(uris: ServerSideLogicUris,state: IssuesOverviewState)
 
 @import userselection.SelectionFilter._
 @import userselection.SelectionFilter.FilterableAttribute._
@@ -12,9 +12,9 @@
             id="@PROJECT.getQueryParam()" name="@PROJECT.getQueryParam()"
             size="5" multiple
                 >
-                @for(p <- context.getSelectionFilter().getAllProjects()) {
+                @for(p <- uris.getSelectionFilter().getAllProjects()) {
                     <option
-                        @if(context.getSelectionFilter().isSelectedProject(p)) {
+                        @if(uris.getSelectionFilter().isSelectedProject(p)) {
                             selected
                         } > @p
                     </option>
@@ -26,9 +26,9 @@
             class="multiselect" id="@COMPONENT.getQueryParam()"
             name="@COMPONENT.getQueryParam()" size="5" multiple
                 >
-                @for(p <- context.getSelectionFilter().getAllComponents()) {
+                @for(p <- uris.getSelectionFilter().getAllComponents()) {
                     <option
-                        @if(context.getSelectionFilter().isSelectedComponent(p)) {
+                        @if(uris.getSelectionFilter().isSelectedComponent(p)) {
                             selected
                         } > @p
                     </option>
@@ -40,9 +40,9 @@
             class="multiselect" id="@ISSUE_TYPE.getQueryParam()"
             name="@ISSUE_TYPE.getQueryParam()" size="5" multiple
                 >
-                @for(p <- context.getSelectionFilter().getAllIssueTypes()) {
+                @for(p <- uris.getSelectionFilter().getAllIssueTypes()) {
                     <option
-                        @if(context.getSelectionFilter().isSelectedType(p)) {
+                        @if(uris.getSelectionFilter().isSelectedType(p)) {
                             selected
                         } > @p
                     </option>
@@ -54,24 +54,24 @@
             id="@REPORTER.getQueryParam()" name="@REPORTER.getQueryParam()"
             size="5" multiple
                 >
-                @for(p <- context.getSelectionFilter().getAllReporters()) {
+                @for(p <- uris.getSelectionFilter().getAllReporters()) {
                     <option
-                        @if(context.getSelectionFilter().isSelectedReporter(p)) {
+                        @if(uris.getSelectionFilter().isSelectedReporter(p)) {
                             selected
                         } > @p
                     </option>
                 }
             </select>
             </div>
-            @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+            @if(!state.isOpen() || state.isAssignedCurrentUser()) {
                 <div class="filter-column">
                     <label >Assigned User</label> <select
                 class="multiselect" id="@ASSIGENED_USER.getQueryParam()"
                 name="@ASSIGENED_USER.getQueryParam()" size="5" multiple
                     >
-                    @for(p <- context.getSelectionFilter().getAllAssignedUsers()) {
+                    @for(p <- uris.getSelectionFilter().getAllAssignedUsers()) {
                         <option
-                            @if(context.getSelectionFilter().isSelectedUser(p)) {
+                            @if(uris.getSelectionFilter().isSelectedUser(p)) {
                                 selected
                             } > @p
                         </option>

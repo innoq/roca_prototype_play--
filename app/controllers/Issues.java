@@ -100,11 +100,11 @@ public class Issues extends Controller {
         sorting.sortIssues(requestedIssues);
         pagination.filterIssues(requestedIssues);
 
-        Context context = new ServerSideLogicContext(pagination, filter, sorting, state);
+        Uris uris = new ServerSideLogicUris(pagination, filter, sorting);
         if (request().queryString().containsKey("ajax")) {
-            return ok(issuesOverview.render(requestedIssues, context));
+            return ok(issuesOverview.render(requestedIssues, uris,state));
         }
-        return ok(main.render(context, issuesOverview.render(requestedIssues, context), serverSideLogicScripts.render()));
+        return ok(main.render(uris, issuesOverview.render(requestedIssues, uris,state), serverSideLogicScripts.render(),state));
     }
 
     /**
@@ -116,8 +116,8 @@ public class Issues extends Controller {
     public static Result getIssue(int id) {
         Issue currentIssue = Repository.getInstance().findIssueById(id);
 
-        Context context = new ServerSideLogicContext(new PaginationFilter(), new SelectionFilter(), new PartialSorting(), IssuesOverviewState.getByIssue(currentIssue));
-        return ok(main.render(context, issueDetail.render(currentIssue, context), serverSideLogicScripts.render()));
+        Uris uris = new ServerSideLogicUris(new PaginationFilter(), new SelectionFilter(), new PartialSorting());
+        return ok(main.render(uris, issueDetail.render(currentIssue, uris), serverSideLogicScripts.render(),IssuesOverviewState.getByIssue(currentIssue)));
     }
 
     /**
@@ -138,8 +138,8 @@ public class Issues extends Controller {
         Map<String, String[]> queryString = request().queryString();
         List<String> ids = Arrays.asList(ArrayUtils.nullToEmpty(queryString.get("issueId")));
 
-        Context context = new ServerSideLogicContext(new PaginationFilter(), new SelectionFilter(), new PartialSorting(), IssuesOverviewState.ASSIGNED_CURRENT_USER);
-        return (ids.size() == 0) ? ok(main.render(context, issuesClosingError.render(context), serverSideLogicScripts.render())) : ok(main.render(context, issuesClosing.render(ids, context), serverSideLogicScripts.render()));
+        Uris uris = new ServerSideLogicUris(new PaginationFilter(), new SelectionFilter(), new PartialSorting());
+        return (ids.size() == 0) ? ok(main.render(uris, issuesClosingError.render(uris), serverSideLogicScripts.render(),IssuesOverviewState.ASSIGNED_CURRENT_USER)) : ok(main.render(uris, issuesClosing.render(ids, uris), serverSideLogicScripts.render(),IssuesOverviewState.ASSIGNED_CURRENT_USER));
     }
 
     /**

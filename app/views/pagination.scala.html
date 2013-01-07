@@ -1,11 +1,11 @@
-			@(context: ServerSideLogicContext)
+			@(uris: ServerSideLogicUris, state: IssuesOverviewState)
             <div class="pagination">
                 <ul>
-                @for(p <- context.getPaginationFilter().getVisiblePages()) {
+                @for(p <- uris.getPaginationFilter().getVisiblePages()) {
                     <li
-                        @if(p.getRight().equals(context.getPaginationFilter().getPageNumber)) {
+                        @if(p.getRight().equals(uris.getPaginationFilter().getPageNumber)) {
                             class="active"
-                        } > <a href="@(context.getIssuesOverviewUriForPage(p.getRight()))">@p.getLeft()</a>
+                        } > <a href="@(uris.getIssuesOverviewUriForPage(p.getRight(), state))">@p.getLeft()</a>
                     </li>
                 }
                 </ul>

@@ -1,9 +1,9 @@
-@(issue: models.Issue, context: Context)
+@(issue: models.Issue, uris: Uris)
 <div id="contentarea" class="span10">
     <div class="content">
         <h3>Issue @issue.id</h3>
         <form class="form-horizontal"
-        action="@context.getUpdateIssueUri(issue.getId)"
+        action="@uris.getUpdateIssueUri(issue.getId)"
         method="POST" id="putForm">
             <dl class="dl-horizontal">
                 <dt>Issue-ID:</dt>

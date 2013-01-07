@@ -1,4 +1,4 @@
-@(issues: List[String], context: Context)
+@(issues: List[String], uris: Uris)
 <div id="contentarea" class="span10">
     <div class="content">
         <h3>Closing of @issues.size() issues</h3>
@@ -15,9 +15,9 @@
                 <button form="getForm" type="submit" class="btn">Cancel</button>
             </div>
         </form>
-        <form action="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER) )" method="GET" id="getForm">
+        <form action="@uris.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER) )" method="GET" id="getForm">
         </form>
-        <form action="@context.getCloseIssuesUri()" method="POST" id="putForm">
+        <form action="@uris.getCloseIssuesUri()" method="POST" id="putForm">
         <input type="hidden" value="PUT" name="_method"/>
             @for(i <- issues) {
                 <input type="hidden" value="@i" name="issueId"/>

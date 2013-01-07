@@ -28,11 +28,10 @@ public class ClientSideIssues extends Controller {
 
         Issues.filterIssuesForState(requestedIssues, state);
 
-        ClientSideLogicContext context = new ClientSideLogicContext(
-                binder.getState());
+        ClientSideLogicUris context = new ClientSideLogicUris();
         return ok(main.render(context,
-                issuesOverview.render(requestedIssues, context),
-                clientSideLogicScripts.render()));
+                issuesOverview.render(requestedIssues, context,binder.getState()),
+                clientSideLogicScripts.render(),binder.getState()));
     }
 
     public static Result getClientSideOverviewPage() {
@@ -51,13 +50,12 @@ public class ClientSideIssues extends Controller {
         List<String> ids = Arrays.asList(ArrayUtils.nullToEmpty(queryString
                 .get("issueId")));
 
-        Context context = new ClientSideLogicContext(
-                IssuesOverviewState.ASSIGNED_CURRENT_USER);
-        return (ids.size() == 0) ? ok(main.render(context,
-                issuesClosingError.render(context),
-                clientSideLogicScripts.render())) : ok(main.render(context,
-                issuesClosing.render(ids, context),
-                clientSideLogicScripts.render()));
+        Uris uris = new ClientSideLogicUris();
+        return (ids.size() == 0) ? ok(main.render(uris,
+                issuesClosingError.render(uris),
+                clientSideLogicScripts.render(), IssuesOverviewState.ASSIGNED_CURRENT_USER)) : ok(main.render(uris,
+                issuesClosing.render(ids, uris),
+                clientSideLogicScripts.render(), IssuesOverviewState.ASSIGNED_CURRENT_USER));
     }
 
     public static Result unassignIssue() {
@@ -78,11 +76,10 @@ public class ClientSideIssues extends Controller {
         Issue currentIssue = Repository.getInstance()
                 .findIssueById(id);
 
-        ClientSideLogicContext context = new ClientSideLogicContext(
-                IssuesOverviewState.getByIssue(currentIssue));
+        ClientSideLogicUris context = new ClientSideLogicUris();
         return ok(main.render(context,
                 issueDetail.render(currentIssue, context),
-                clientSideLogicScripts.render()));
+                clientSideLogicScripts.render(),IssuesOverviewState.getByIssue(currentIssue)));
     }
 
     public static Result updateIssue(int id) {

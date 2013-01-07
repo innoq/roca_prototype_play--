@@ -56,4 +56,21 @@ public enum IssuesOverviewState {
 
 		throw new IllegalStateException("unknown issue state");
 	}
+
+    public boolean isAssignedOtherUser() {
+        return ASSIGNED_OTHERS.equals(this);
+    }
+
+    public boolean isAssignedCurrentUser() {
+        return IssuesOverviewState.ASSIGNED_CURRENT_USER.equals(this);
+    }
+
+
+    public boolean isOpen() {
+        return IssuesOverviewState.OPEN.equals(this);
+    }
+
+    public boolean isClosed() {
+        return IssuesOverviewState.CLOSED.equals(this);
+    }
 }

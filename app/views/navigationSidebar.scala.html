@@ -1,27 +1,27 @@
-@(context: Context)
+@(uris: Uris, state: IssuesOverviewState)
 <div class="well sidebar-nav">
 <ul class="nav nav-list">
 <li class="nav-header">Navigation</li>
-<li @if(context.isStateOpen()) {
+<li @if(state.isOpen()) {
     class="active"
-} @if(context.isStateAssignedCurrentUser()) {
-    data-targetUriBase=" @context.getUnassignIssueUri()
-    "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.OPEN)">Open issues</a> </li>
-    <li @if(context.isStateAssignedCurrentUser()) {
-        class="active"} @if(context.isStateOpen()) {
-        data-targetUriBase=" @context.getAssignIssueUri()
-        "}> <a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER)">
+} @if(state.isAssignedCurrentUser()) {
+    data-targetUriBase=" @uris.getUnassignIssueUri()
+    "}> <a href="@uris.getOverviewUriForState(IssuesOverviewState.OPEN)">Open issues</a> </li>
+    <li @if(state.isAssignedCurrentUser()) {
+        class="active"} @if(state.isOpen()) {
+        data-targetUriBase=" @uris.getAssignIssueUri()
+        "}> <a href="@uris.getOverviewUriForState(IssuesOverviewState.ASSIGNED_CURRENT_USER)">
             Assigned to me
         </a> </li>
         <li
-            @if(context.isStateAssignedOtherUser()) {
-                class="active"} > <a href="@context.getOverviewUriForState(IssuesOverviewState.ASSIGNED_OTHERS)">
+            @if(state.isAssignedOtherUser()) {
+                class="active"} > <a href="@uris.getOverviewUriForState(IssuesOverviewState.ASSIGNED_OTHERS)">
             Assigned to others
         </a>
         </li>
         <li
-            @if(context.isStateClosed()) {
-                class="active"} > <a href="@context.getOverviewUriForState(IssuesOverviewState.CLOSED)">
+            @if(state.isClosed()) {
+                class="active"} > <a href="@uris.getOverviewUriForState(IssuesOverviewState.CLOSED)">
             Closed issues
         </a>
         </li>

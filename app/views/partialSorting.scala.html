@@ -1,100 +1,100 @@
-@(context: ServerSideLogicContext)
+@(uris: ServerSideLogicUris,state: IssuesOverviewState)
 
 @import userselection.PartialSorting.SortableAttribute._
 @import userselection.PartialSorting.SortDirection._
 
 <tr>
-    @if(context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+    @if(state.isOpen() || state.isAssignedCurrentUser()) {
         <th></th>
     }
     <th>
         Issue-ID <a
-    href="@(context.getAllIssuesWithNewSortingUri(ID, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(ID, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(ID, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(ID, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
     <th>
         Issue Type <a
-    href="@(context.getAllIssuesWithNewSortingUri(ISSUE_TYPE, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(ISSUE_TYPE, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(ISSUE_TYPE, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(ISSUE_TYPE, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
     <th>
         Summary <a
-    href="@(context.getAllIssuesWithNewSortingUri(SUMMARY, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(SUMMARY, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@context.getAllIssuesWithNewSortingUri(SUMMARY, DESCENDING) )">
+    href="@uris.getAllIssuesWithNewSortingUri(SUMMARY, DESCENDING,state) )">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
     <th>
         Priority <a
-    href="@( context.getAllIssuesWithNewSortingUri(PRIORITY,ASCENDING))">
+    href="@( uris.getAllIssuesWithNewSortingUri(PRIORITY,ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(PRIORITY, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(PRIORITY, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
     <th>
         Project <a
-    href="@(context.getAllIssuesWithNewSortingUri(PROJECT, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(PROJECT, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(PROJECT, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(PROJECT, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
     <th>
         Component <a
-    href="@(context.getAllIssuesWithNewSortingUri(COMPONENT, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(COMPONENT, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(COMPONENT, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(COMPONENT, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
     <th>
         Reporter <a
-    href="@(context.getAllIssuesWithNewSortingUri(REPORTER, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(REPORTER, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(REPORTER, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(REPORTER, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
-    </th> @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+    </th> @if(!state.isOpen() || state.isAssignedCurrentUser()) {
     <th>
         Assigned Person <a
-    href="@(context.getAllIssuesWithNewSortingUri(ASSIGNED_USER, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(ASSIGNED_USER, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(ASSIGNED_USER, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(ASSIGNED_USER, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>
 }
     <th>
         Created <a
-    href="@(context.getAllIssuesWithNewSortingUri(OPEN_DATE, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(OPEN_DATE, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(OPEN_DATE, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(OPEN_DATE, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
-    </th> @if(context.isStateClosed()) {
+    </th> @if(state.isClosed()) {
     <th>
         Closed <a
-    href="@(context.getAllIssuesWithNewSortingUri(CLOSE_DATE, ASCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(CLOSE_DATE, ASCENDING,state))">
         <i class="icon-chevron-up"></i>
     </a> <a
-    href="@(context.getAllIssuesWithNewSortingUri(CLOSE_DATE, DESCENDING))">
+    href="@(uris.getAllIssuesWithNewSortingUri(CLOSE_DATE, DESCENDING,state))">
         <i class="icon-chevron-down"></i>
     </a>
     </th>

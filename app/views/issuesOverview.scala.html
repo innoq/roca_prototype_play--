@@ -1,22 +1,22 @@
-@(issues: List[models.Issue], context: Context)
+@(issues: List[models.Issue], uris: Uris, state: IssuesOverviewState)
 <div id="content" class="content">
-    @if(context.isFilterable) {
-        @selectionFilter(context.asInstanceOf[ServerSideLogicContext])
+    @if(uris.isFilterable) {
+        @selectionFilter(uris.asInstanceOf[ServerSideLogicUris],state)
     }
     <div id="issues" class="issues">
-        @if(context.isStateOpen()) {
-            <form action="@(context.getAssignIssueUri())" method="POST">
-        } @if(context.isStateAssignedCurrentUser()) {
-        <form action="@(context.getClosingProcessUri())" method="GET">
+        @if(state.isOpen()) {
+            <form action="@(uris.getAssignIssueUri())" method="POST">
+        } @if(state.isAssignedCurrentUser()) {
+        <form action="@(uris.getClosingProcessUri())" method="GET">
     }
         <table id="datatable" class="table table-striped"
         data-queryString="">
             <thead>
-            @if(context.isFilterable) {
-                @partialSorting(context.asInstanceOf[ServerSideLogicContext])
+            @if(uris.isFilterable) {
+                @partialSorting(uris.asInstanceOf[ServerSideLogicUris],state)
             } else {
                 <tr>
-                    @if(context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                    @if(state.isOpen() || state.isAssignedCurrentUser()) {
                         <th></th>
                     }
                     <th>Issue-ID</th>
@@ -26,11 +26,11 @@
                     <th>Project</th>
                     <th>Component</th>
                     <th>Reporter</th>
-                    @if(!context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                    @if(!state.isOpen() || state.isAssignedCurrentUser()) {
                         <th>Assigned Person</th>
                     }
                     <th>Created</th>
-                    @if(context.isStateClosed()) {
+                    @if(state.isClosed()) {
                         <th>Closed</th>
                     }
                 </tr>
@@ -39,7 +39,7 @@
             <tbody data-provides="rowlink" data-target="a.rowlink">
             @for(i <- issues) {
                 <tr data-issueId="@i.getId">
-                    @if(context.isStateOpen() || context.isStateAssignedCurrentUser()) {
+                    @if(state.isOpen() || state.isAssignedCurrentUser()) {
                         <td class="nolink">
                         <input name="issueId" type="checkbox"
                             value="@i.getId"/>
@@ -47,7 +47,7 @@
                     }
                 <td class="nolink">
                     <a
-                    href="@(context.getUriForIssue(i.getId))"
+                    href="@(uris.getUriForIssue(i.getId))"
                     class="rowlink">
                     @i.getId
                     </a>
@@ -58,26 +58,26 @@
                 <td>@i.projectName</td>
                 <td>@i.componentName</td>
                 <td>@i.reporter</td>
-                    @if(!context.isStateOpen()) {
+                    @if(!state.isOpen()) {
                         <td>@i.assignedUser.name</td>
                     }
                 <td>@i.openDate</td>
-                    @if(context.isStateClosed()) {
+                    @if(state.isClosed()) {
                         <td>@i.closeDate</td>
                     }
                 </tr>
             }
             </tbody>
         </table>
-        @if(issues.size() != 0 && context.isStateOpen()) {
+        @if(issues.size() != 0 && state.isOpen()) {
             <button class="btn">Assign to me</button>
         </form>
-        } @if(issues.size() != 0 && context.isStateAssignedCurrentUser()) {
+        } @if(issues.size() != 0 && state.isAssignedCurrentUser()) {
         <button class="btn">Close issue</button>
     </form>
     }
-        @if(context.isFilterable) {
-            @pagination(context.asInstanceOf[ServerSideLogicContext])
+        @if(uris.isFilterable) {
+            @pagination(uris.asInstanceOf[ServerSideLogicUris],state)
         }
     </div>
 </div>

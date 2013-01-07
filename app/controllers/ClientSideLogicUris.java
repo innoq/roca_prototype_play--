@@ -3,14 +3,8 @@ package controllers;
 import actions.AuthenticationAction;
 import play.mvc.Call;
 
-public class ClientSideLogicContext implements Context{
+public class ClientSideLogicUris implements Uris {
 
-	private final IssuesOverviewState state;
-	
-	public ClientSideLogicContext(IssuesOverviewState state) {
-		super();
-		this.state = state;
-	}
 
 	@Override
 	public Call getClosingProcessUri() {
@@ -25,26 +19,6 @@ public class ClientSideLogicContext implements Context{
 	@Override
 	public Call getUnassignIssueUri() {
 		return routes.ClientSideIssues.unassignIssue();
-	}
-
-	@Override
-	public boolean isStateOpen() {
-		return IssuesOverviewState.OPEN.equals(state);
-	}
-
-	@Override
-	public boolean isStateClosed() {
-		return IssuesOverviewState.CLOSED.equals(state);
-	}
-
-	@Override
-	public boolean isStateAssignedCurrentUser() {
-		return IssuesOverviewState.ASSIGNED_CURRENT_USER.equals(state);
-	}
-
-	@Override
-	public boolean isStateAssignedOtherUser() {
-		return IssuesOverviewState.ASSIGNED_OTHERS.equals(state);
 	}
 
 	@Override
