@@ -1,4 +1,6 @@
 @(issue: models.Issue, uris: Uris)
+@import controllers.Util.countLines
+@import controllers.Util.countLines
 <div id="contentarea" class="span10">
     <div class="content">
         <h3>Issue @issue.id</h3>
@@ -66,7 +68,7 @@
                         <label class="control-label">@a.argumentId</label>
                         <div class="controls">
                             <textarea form="putForm" class="input-xxlarge" name="argument"
-                            rows="@controllers.ApplicationController.countLines(a.arguments)"
+                            rows="@countLines(a.arguments)"
                                 @if(!issue.isAssignedToCurrentUser(actions.AuthenticationAction.getCurrentUserName)) {
                                     readonly
                                 } > @a.arguments
@@ -81,7 +83,7 @@
                 <label class="control-label">Comment</label>
                 <div class="controls">
                     <textarea form="putForm" class="input-xxlarge" name="comment"
-                    rows="@controllers.ApplicationController.countLines(issue.comment)"
+                    rows="@countLines(issue.comment)"
                         @if(!issue.isAssignedToCurrentUser(actions.AuthenticationAction.getCurrentUserName)) {
                             readonly
                         } > @issue.comment

@@ -70,16 +70,6 @@ public class ApplicationController extends Controller {
     }
 
     /**
-     * Count the minimal number of lines a textarea should provide to display the given string.
-     *
-     * @param string the string to display
-     * @return the number of lines to display
-     */
-    public static int countLines(final String string) {
-        return string == null ? 5 : Math.max(5, string.split(System.getProperty("line.separator")).length);
-    }
-
-    /**
      * Returns an overview page of all issues which corresponds to the given user selection criteria.
      *
      * @param sorting     specification for the sorting order.
