@@ -10,52 +10,48 @@ import models.IssueProcessingState;
  */
 public enum IssuesOverviewState {
 
-	ALL("issues"), CLOSED("issues/closed"), OPEN("issues/open"), ASSIGNED_CURRENT_USER("issues/claimed/.*/assigned") {
+    ALL("issues"),
+    CLOSED("issues/closed"),
+    OPEN("issues/open"),
+    ASSIGNED_CURRENT_USER("issues/claimed/.*/assigned") {
+        @Override
+        public String unbind() {
+            return "issues/claimed/" + AuthenticationAction.getCurrentUserName() + "/assigned";
+        }
+    },
+    ASSIGNED_OTHERS("issues/claimed/.*/notassigned") {
+        @Override
+        public String unbind() {
+            return "issues/claimed/" + AuthenticationAction.getCurrentUserName() + "/notassigned";
+        }
+    };
+    private final String regex;
 
-		@Override
-		public String unbind() {
-			return "issues/claimed/" + AuthenticationAction.getCurrentUserName() + "/assigned";
-		}
+    private IssuesOverviewState(String regex) {
+        this.regex = regex;
+    }
 
-	}
+    public static IssuesOverviewState getByIssue(Issue issue) {
+        if (issue.isOpen()) {
+            return OPEN;
+        } else if (issue.isClosed()) {
+            return CLOSED;
+        } else if (issue.isAssignedToCurrentUser(AuthenticationAction.getCurrentUserName())) {
+            return ASSIGNED_CURRENT_USER;
+        } else if (issue.isAssignedToOtherUser(AuthenticationAction.getCurrentUserName())) {
+            return ASSIGNED_OTHERS;
+        }
 
-	,
-	ASSIGNED_OTHERS("issues/claimed/.*/notassigned") {
+        throw new IllegalStateException("unknown issue state");
+    }
 
-		@Override
-		public String unbind() {
-			return "issues/claimed/" + AuthenticationAction.getCurrentUserName() + "/notassigned";
-		}
+    public String getRegex() {
+        return regex;
+    }
 
-	};
-
-	private final String regex;
-
-	private IssuesOverviewState(String regex) {
-		this.regex = regex;
-	}
-
-	public String getRegex() {
-		return regex;
-	}
-
-	public String unbind() {
-		return getRegex();
-	}
-
-	public static IssuesOverviewState getByIssue(Issue issue) {
-		if (issue.isOpen()) {
-			return OPEN;
-		} else if (issue.isClosed()) {
-			return CLOSED;
-		} else if (issue.isAssignedToCurrentUser(AuthenticationAction.getCurrentUserName())) {
-			return ASSIGNED_CURRENT_USER;
-		} else if (issue.isAssignedToOtherUser(AuthenticationAction.getCurrentUserName())) {
-			return ASSIGNED_OTHERS;
-		}
-
-		throw new IllegalStateException("unknown issue state");
-	}
+    public String unbind() {
+        return getRegex();
+    }
 
     public boolean isAssignedOtherUser() {
         return ASSIGNED_OTHERS.equals(this);
@@ -64,7 +60,6 @@ public enum IssuesOverviewState {
     public boolean isAssignedCurrentUser() {
         return IssuesOverviewState.ASSIGNED_CURRENT_USER.equals(this);
     }
-
 
     public boolean isOpen() {
         return IssuesOverviewState.OPEN.equals(this);

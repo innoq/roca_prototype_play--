@@ -26,7 +26,7 @@ public class ClientSideIssues extends Controller {
         List<Issue> requestedIssues = new ArrayList<Issue>(Repository.getInstance().getAllIssues());
         IssuesOverviewState state = binder.getState();
 
-        Issues.filterIssuesForState(requestedIssues, state);
+        ApplicationController.filterIssuesForState(requestedIssues, state);
 
         ClientSideLogicUris context = new ClientSideLogicUris();
         return ok(main.render(context,
@@ -39,7 +39,7 @@ public class ClientSideIssues extends Controller {
     }
 
     public static Result closeIssues() {
-        Issues.doCloseIssues();
+        ApplicationController.doCloseIssues();
         return redirect(routes.ClientSideIssues
                 .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
@@ -60,14 +60,14 @@ public class ClientSideIssues extends Controller {
 
     public static Result unassignIssue() {
 
-        Issues.doRenameIssueAssignment();
+        ApplicationController.doRenameIssueAssignment();
         return redirect(routes.ClientSideIssues
                 .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
     public static Result assignIssueToUser(String userName) {
 
-        Issues.doAssignIssueToUser(userName);
+        ApplicationController.doAssignIssueToUser(userName);
         return redirect(routes.ClientSideIssues
                 .getClientSideOverview(IssueOverviewStateBinder.OPEN));
     }
@@ -84,7 +84,7 @@ public class ClientSideIssues extends Controller {
 
     public static Result updateIssue(int id) {
 
-        Issues.doUpdateIssue(id);
+        ApplicationController.doUpdateIssue(id);
         return redirect(routes.ClientSideIssues
                 .getClientSideOverview(IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }

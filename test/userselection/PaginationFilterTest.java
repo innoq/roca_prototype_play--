@@ -2,7 +2,6 @@ package userselection;
 
 import static org.junit.Assert.assertEquals;
 
-import controllers.Issues;
 import integration.PlayBaseTest;
 
 import java.util.ArrayList;

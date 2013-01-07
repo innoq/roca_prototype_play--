@@ -42,25 +42,25 @@ public class ServerSideLogicUris implements Uris {
 
 
 	public Call getUnassignIssueUri() {
-		return routes.Issues.removeIssueAssignment(partialSorting,
+		return routes.ApplicationController.removeIssueAssignment(partialSorting,
 				paginationFilter, selectionFilter);
 	}
 
 	@Override
 	public Call getAssignIssueUri() {
-		return routes.Issues.assignIssueToUser(
+		return routes.ApplicationController.assignIssueToUser(
 				AuthenticationAction.getCurrentUserName(), partialSorting,
 				paginationFilter, selectionFilter);
 	}
 
 	@Override
 	public Call getClosingProcessUri() {
-		return routes.Issues.getIssuesClosingProcess();
+		return routes.ApplicationController.getIssuesClosingProcess();
 	}
 
 	public String getAllIssuesWithNewSortingUri(SortableAttribute attribute,
 			SortDirection direction,IssuesOverviewState state) {
-		return routes.Issues.getIssueOverview(partialSorting,
+		return routes.ApplicationController.getIssueOverview(partialSorting,
 				paginationFilter, selectionFilter,
 				IssueOverviewStateBinder.create(state))
 				+ "&"
@@ -68,7 +68,7 @@ public class ServerSideLogicUris implements Uris {
 	}
 
 	public Call getIssuesOverviewUriForPage(int pageNumber,IssuesOverviewState state) {
-		return routes.Issues.getIssueOverview(partialSorting,
+		return routes.ApplicationController.getIssueOverview(partialSorting,
 				new userselection.PaginationFilter(pageNumber), selectionFilter,
 				IssueOverviewStateBinder.create(state));
 	}
@@ -80,25 +80,22 @@ public class ServerSideLogicUris implements Uris {
 
 	@Override
 	public Call getOverviewUriForState(IssuesOverviewState state) {
-		return routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.create(state));
+		return routes.ApplicationController.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.create(state));
 	}
 
 	@Override
 	public Call getUriForIssue(int id) {
-		return routes.Issues.getIssueDetails(id);
+		return routes.ApplicationController.getIssueDetails(id);
 	}
 
 	@Override
 	public Call getCloseIssuesUri() {
-		return routes.Issues.closeIssues();
+		return routes.ApplicationController.closeIssues();
 	}
 
 	@Override
 	public Call getUpdateIssueUri(int id) {
-		return routes.Issues.updateIssue(id);
+		return routes.ApplicationController.updateIssue(id);
 	}
-	
-
-
 	
 }

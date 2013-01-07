@@ -22,11 +22,11 @@ import java.util.*;
  * Main controller for the serverside logic implementation.
  */
 @With(AuthenticationAction.class)
-public class Issues extends Controller {
+public class ApplicationController extends Controller {
 
     public static Result assignIssueToUser(String userName, PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
         doAssignIssueToUser(userName);
-        return redirect(routes.Issues.getIssueOverview(sorting, pagination, filter, IssueOverviewStateBinder.OPEN));
+        return redirect(routes.ApplicationController.getIssueOverview(sorting, pagination, filter, IssueOverviewStateBinder.OPEN));
     }
 
     static void doAssignIssueToUser(String userName) {
@@ -48,7 +48,7 @@ public class Issues extends Controller {
     public static Result closeIssues() {
 
         doCloseIssues();
-        return redirect(routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.ApplicationController.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
@@ -125,7 +125,7 @@ public class Issues extends Controller {
      * @return the root page.
      */
     public static Result getRoot() {
-        return redirect(routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.ApplicationController.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.OPEN));
     }
 
@@ -153,7 +153,7 @@ public class Issues extends Controller {
     public static Result removeIssueAssignment(PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
 
         doRenameIssueAssignment();
-        return redirect(routes.Issues.getIssueOverview(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
+        return redirect(routes.ApplicationController.getIssueOverview(sorting, pagination, filter, IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
     /**
@@ -178,7 +178,7 @@ public class Issues extends Controller {
 
         doUpdateIssue(id);
 
-        return redirect(routes.Issues.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
+        return redirect(routes.ApplicationController.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(),
                 IssueOverviewStateBinder.ASSIGNED_CURRENT_USER));
     }
 
