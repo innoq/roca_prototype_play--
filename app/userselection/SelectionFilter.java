@@ -39,25 +39,20 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
 
     public static SelectionFilter create(List<Issue> issues, Map<String, String[]> queryString) {
 
-        final List<String> selectedAssignedUsers = (queryString.get(FilterableAttributes.ASSIGENED_USER.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.ASSIGENED_USER.getQueryParam()));
-        final List<String> selectedComponents = (queryString.get(FilterableAttributes.COMPONENT.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.COMPONENT.getQueryParam()));
-        final List<String> selectedReporters = (queryString.get(FilterableAttributes.REPORTER.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.REPORTER.getQueryParam()));
-        final List<String> selectedProjects = (queryString.get(FilterableAttributes.PROJECT.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.PROJECT.getQueryParam()));
-        final List<String> selectedIssueTypes = (queryString.get(FilterableAttributes.ISSUE_TYPE.getQueryParam()) == null) ? Collections
-                .<String>emptyList() : Arrays.<String>asList(queryString.get(FilterableAttributes.ISSUE_TYPE.getQueryParam()));
-
         SelectionFilter selectionFilter = new SelectionFilter();
-        selectionFilter.setSelectedAssignedUsers(selectedAssignedUsers);
-        selectionFilter.setSelectedComponents(selectedComponents);
-        selectionFilter.setSelectedProjects(selectedProjects);
-        selectionFilter.setSelectedReporters(selectedReporters);
-        selectionFilter.setSelectedIssueTypes(selectedIssueTypes);
+
+        selectionFilter.setSelectedAssignedUsers(getFilterableAttributesInQueryString(queryString, FilterableAttribute.ASSIGENED_USER));
+        selectionFilter.setSelectedComponents(getFilterableAttributesInQueryString(queryString, FilterableAttribute.COMPONENT));
+        selectionFilter.setSelectedProjects(getFilterableAttributesInQueryString(queryString, FilterableAttribute.PROJECT));
+        selectionFilter.setSelectedReporters(getFilterableAttributesInQueryString(queryString, FilterableAttribute.REPORTER));
+        selectionFilter.setSelectedIssueTypes(getFilterableAttributesInQueryString(queryString, FilterableAttribute.ISSUE_TYPE));
 
         return selectionFilter;
+    }
+
+    private static List<String> getFilterableAttributesInQueryString(Map<String, String[]> queryString, FilterableAttribute attributes) {
+        return (queryString.get(attributes.getQueryParam()) == null) ? Collections
+                .<String>emptyList() : Arrays.<String>asList(queryString.get(attributes.getQueryParam()));
     }
 
     public void setSelectedReporters(Collection<String> selectedReporters) {
@@ -149,15 +144,12 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
     }
 
     public void filterIssues(Collection<Issue> issues) {
-
-        // das hier ist unschoen da es eigentlich lieber beim binding (also der
-        // factory Methode) passieren sollte.
         fillFilterableAttributes(issues);
-
         CollectionUtils.filter(issues, new MatchesRelevantAttributesPredicate());
     }
 
     private void fillFilterableAttributes(Collection<Issue> issues) {
+
         final Set<String> allIds = createNotNullSet();
         final Set<String> allReporters = createNotNullSet();
         final Set<String> allAssignedUsers = createNotNullSet();
@@ -194,15 +186,15 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
     @Override
     public String unbind(String key) {
 
-        List<Pair<FilterableAttributes, ? extends Collection<String>>> list = new ArrayList<Pair<FilterableAttributes, ? extends Collection<String>>>();
-        list.add(Pair.of(FilterableAttributes.ASSIGENED_USER, selectedAssignedUsers));
-        list.add(Pair.of(FilterableAttributes.COMPONENT, selectedComponents));
-        list.add(Pair.of(FilterableAttributes.PROJECT, selectedProjects));
-        list.add(Pair.of(FilterableAttributes.REPORTER, selectedReporters));
-        list.add(Pair.of(FilterableAttributes.ISSUE_TYPE, selectedIssueTypes));
+        List<Pair<FilterableAttribute, ? extends Collection<String>>> list = new ArrayList<Pair<FilterableAttribute, ? extends Collection<String>>>();
+        list.add(Pair.of(FilterableAttribute.ASSIGENED_USER, selectedAssignedUsers));
+        list.add(Pair.of(FilterableAttribute.COMPONENT, selectedComponents));
+        list.add(Pair.of(FilterableAttribute.PROJECT, selectedProjects));
+        list.add(Pair.of(FilterableAttribute.REPORTER, selectedReporters));
+        list.add(Pair.of(FilterableAttribute.ISSUE_TYPE, selectedIssueTypes));
 
         List<String> params = new ArrayList<String>();
-        for (Pair<FilterableAttributes, ? extends Collection<String>> pair : list) {
+        for (Pair<FilterableAttribute, ? extends Collection<String>> pair : list) {
             for (String selected : pair.getRight()) {
                 params.add(pair.getLeft().queryParam + "=" + selected);
             }
@@ -216,12 +208,12 @@ public class SelectionFilter implements QueryStringBindable<SelectionFilter> {
         throw new UnsupportedOperationException("JavaScript unbind is not supported!");
     }
 
-    public static enum FilterableAttributes {
+    public static enum FilterableAttribute {
 
         ID("id"), ASSIGENED_USER("assignedUser"), COMPONENT("component"), REPORTER("reporter"), PROJECT("project"), ISSUE_TYPE("issueType");
         private final String queryParam;
 
-        private FilterableAttributes(String queryParam) {
+        private FilterableAttribute(String queryParam) {
             this.queryParam = queryParam;
         }
 

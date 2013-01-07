@@ -12,8 +12,6 @@ import models.Issue;
 
 import org.junit.Test;
 
-import userselection.SelectionFilter.FilterableAttributes;
-
 
 public class SelectionFilterTest {
 
@@ -23,8 +21,8 @@ public class SelectionFilterTest {
 	@Test
 	public void filterIssuesSupportsAFilteringForEveryItemInFilteringValues() {
 
-		FilterableAttributes[] filterAttributes = FilterableAttributes.values();
-		for (FilterableAttributes attribute : filterAttributes) {
+		SelectionFilter.FilterableAttribute[] filterAttributes = SelectionFilter.FilterableAttribute.values();
+		for (SelectionFilter.FilterableAttribute attribute : filterAttributes) {
 			queryString.put(attribute.getQueryParam(), new String[] { "xxx" });
 		}
 
@@ -45,7 +43,7 @@ public class SelectionFilterTest {
 		Issue2.componentName = "xxx";
 		issues.add(Issue2);
 
-		queryString.put(FilterableAttributes.COMPONENT.getQueryParam(), new String[] { "test", "hallo", "hund" });
+		queryString.put(SelectionFilter.FilterableAttribute.COMPONENT.getQueryParam(), new String[] { "test", "hallo", "hund" });
 
 		SelectionFilter filter = SelectionFilter.create(Collections.<Issue> emptyList(), queryString);
 		filter.filterIssues(issues);
@@ -72,8 +70,8 @@ public class SelectionFilterTest {
 		Issue3.reporter = "test";
 		issues.add(Issue3);
 
-		queryString.put(FilterableAttributes.COMPONENT.getQueryParam(), new String[] { "test", "hallo", "hund" });
-		queryString.put(FilterableAttributes.REPORTER.getQueryParam(), new String[] { "test" });
+		queryString.put(SelectionFilter.FilterableAttribute.COMPONENT.getQueryParam(), new String[] { "test", "hallo", "hund" });
+		queryString.put(SelectionFilter.FilterableAttribute.REPORTER.getQueryParam(), new String[] { "test" });
 
 		SelectionFilter filter = SelectionFilter.create(Collections.<Issue> emptyList(), queryString);
 		filter.filterIssues(issues);
