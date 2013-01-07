@@ -18,9 +18,8 @@ import models.IssueProcessingState;
 import models.User;
 
 /**
- * Generator zum Erstellen von Issues, im Wesentlichen uebernommen vom jersey
- * Prototypen.
- *
+ * Simple generator for test data.
+ * Slightly modified version of the Roca jersey prototype.
  *
  */
 public final class IssueGenerator {
@@ -31,7 +30,6 @@ public final class IssueGenerator {
 
 
     final Date now = new Date();
-    // vor hundert Tagen
     final Date onceUponATime = new Date(now.getTime() - 100L * 24L * 60L * 60L * 1000L);
     final Random random = new Random();
     private static final List<Character> CHAR_TABLE = createCharTable();
@@ -212,7 +210,6 @@ public final class IssueGenerator {
         return stringBuilder.toString();
     }
 
-    // Nicht perfekt, aber fuer unsere Zwecke reicht's
     private long createRandomLong(final long minValue, final long maxValue) {
         if (minValue >= maxValue) {
             throw new IllegalArgumentException("minValue must be less than maxValue");
