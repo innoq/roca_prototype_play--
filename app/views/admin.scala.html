@@ -1,0 +1,53 @@
+@(defaultIssues: Int, defaultSwitch: Int)
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/bootstrap.min.css")"/>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap_fix.css")"/>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/roca_lvm.min.css")"/>
+  </head>
+  <body>
+    @menubar()
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <img src="@routes.Assets.at("images/admin_tools.png")" class="img-rounded"  alt="available at: http://openclipart.org/detail/143623/admin-tools-icon-by-darth_schmoo " />
+        </div>
+        <div class="span10">
+          <legend>Configure the application
+          </legend>
+          <fieldset>
+            <p>
+              <em>Not My Issue</em> could switch the filtering implementation at a given number of issues:
+              <ul class="dl-horizontal">
+                <li> <strong>below</strong> filtering, sorting and pagination is done on the clientside via javascript</li>
+                <li> <strong>equals or above</strong> filtering, sorting and pagination is done on the serverside</li>
+              </ul>
+              <form method="POST" id="admin" action="@routes.ApplicationController.adminApplication()" class="form-horizontal">
+                <div class="control-group input-append ">
+                  <label class="control-label">Issues to generate</label>
+                  <div class="controls">
+                    <input type="number" name="number" value="@defaultIssues" class="input-mini" />
+                    <span class="add-on">#</span>
+                  </div>
+                </div>
+                <div class="control-group input-append ">
+                  <label class="control-label">Switch logic at</label>
+                  <div class="controls">
+                    <input type="number" name="switch" value="@defaultSwitch" class="input-mini" />
+                    <span class="add-on">#</span>
+                  </div>
+                </div>
+                <div class="controls">
+                  <button type="submit" class="btn btn-primary">Ok let's start
+                  </button>
+                </div>
+              </form>
+            </p>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

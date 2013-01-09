@@ -3,7 +3,14 @@
 # ~~~~
 
 # Root
-GET		/															controllers.ApplicationController.getChoicePage
+<<<<<<< HEAD
+GET		/															controllers.ApplicationController.getRoot()
+=======
+GET		/															controllers.ApplicationController.getAdminPage()
+>>>>>>> 8c9d99d... merge conflict resolution #2
+
+# Admin
+GET     /admin                                                      controllers.ApplicationController.getAdminPage()
 
 # ----------- Client Side -----------
 
@@ -37,6 +44,9 @@ GET		/services/$binder<issues/open>								controllers.ApplicationController.get
 GET		/services/$binder<issues/claimed/.*/assigned>				controllers.ApplicationController.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
 GET		/services/$binder<issues/claimed/.*/notassigned>			controllers.ApplicationController.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
 GET		/services/$binder<issues/closed>							controllers.ApplicationController.getIssueOverview(partialSorting: PartialSorting, page: PaginationFilter, selectionFilter: SelectionFilter,binder: IssueOverviewStateBinder)
+
+# Create Issues
+POST    /services/issues                                            controllers.ApplicationController.adminApplication()
 
 # Close issues
 GET		/services/issues/closing									controllers.ApplicationController.getIssuesClosingProcess()

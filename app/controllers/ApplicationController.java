@@ -11,6 +11,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
 import repository.Repository;
+import tools.IssueGenerator;
 import userselection.PaginationFilter;
 import userselection.PartialSorting;
 import userselection.SelectionFilter;
@@ -23,6 +24,30 @@ import java.util.*;
  */
 @With(AuthenticationAction.class)
 public class ApplicationController extends Controller {
+
+    
+    public static Result getAdminPage() {
+        GlobalConfiguration config = GlobalConfiguration.getInstance();
+        return ok(views.html.admin.render(config.getDefaultNumberOfIssues(),config.getDefaultImplementationSwitch()));
+    }
+
+
+    public static  Result adminApplication() {
+
+        Repository.getInstance().deleteAllIssues();
+        IssueGenerator.getInstance().reset();
+
+        Map<String, String[]> form = request().body().asFormUrlEncoded();
+        String[] numbers = form.get("number");
+        List<Issue> randomIssues = IssueGenerator.getInstance().createRandomIssues(Integer.parseInt(numbers[0]), Repository.getInstance().getAllUser());
+        Repository.getInstance().saveAllIssues(randomIssues);
+
+        String[] switchNumber = form.get("switch");
+        GlobalConfiguration.getInstance().setActualImplementationSwitch(Integer.parseInt(switchNumber[0]));
+
+        return redirect(routes.ApplicationController.getIssueOverview(new PartialSorting(), new PaginationFilter(), new SelectionFilter(), IssueOverviewStateBinder.OPEN));
+    }
+
 
     public static Result assignIssueToUser(String userName, PartialSorting sorting, PaginationFilter pagination, SelectionFilter filter) {
         doAssignIssueToUser(userName);
@@ -96,6 +121,8 @@ public class ApplicationController extends Controller {
         return ok(main.render(uris, issuesOverview.render(requestedIssues, uris, state), serverSideLogicScripts.render(), state));
     }
 
+
+    
     /**
      * Returns a detailed html representation of a single issue.
      *

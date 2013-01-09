@@ -18,8 +18,9 @@ import models.IssueProcessingState;
 import models.User;
 
 /**
- * Simple generator for test data.
- * Slightly modified version of the Roca jersey prototype.
+ * Generator zum Erstellen von Issues, im Wesentlichen uebernommen vom jersey
+ * Prototypen.
+ *
  *
  */
 public final class IssueGenerator {
@@ -30,6 +31,7 @@ public final class IssueGenerator {
 
 
     final Date now = new Date();
+    // vor hundert Tagen
     final Date onceUponATime = new Date(now.getTime() - 100L * 24L * 60L * 60L * 1000L);
     final Random random = new Random();
     private static final List<Character> CHAR_TABLE = createCharTable();
@@ -43,8 +45,8 @@ public final class IssueGenerator {
     private static String[] VERSIONS = {"1.0", "1.2", "1.1", "2.0.1", "2.0.12232", "3.1", "3.2.1", "1.6.8"};
     private static String[] PROJECT_NAMES = {"WAHN III", "ROCKET", "IMPROVE", "DISCOVER", "MAGENTA", "SENATOR", "ROCA"};
     private static String[] PRIORITIES = {"HIGH", "URGENT", "CRASH", "LOW", "MEDIUM", "VERY VERY LOW", "MEDIUM HIGH", "MEDIUM LOW"};
-    private static final String[][] argumentNameLists = {{"oneArgument", "anOtherArgument"},
-        {"firstArgument", "secondArgument", "thirdArgument"}, {}, {"oneLonelyArgument"}};
+    private static final String[][] argumentNameLists = {{"einArgmuent", "nochEinArgument"},
+        {"dasErsteArgument", "dasZweiteArgument", "dasDritteArgument"}, {}, {"einEimsamesArgument"}};
 
     private IssueGenerator() {
         super();
@@ -69,6 +71,8 @@ public final class IssueGenerator {
         return users;
     }
 
+    
+    
     public List<Issue> createRandomIssues(final int number, Collection<User> users) {
         if (number < 0) {
             throw new IllegalArgumentException("number must not be negative");
@@ -210,6 +214,7 @@ public final class IssueGenerator {
         return stringBuilder.toString();
     }
 
+    // Nicht perfekt, aber fuer unsere Zwecke reicht's
     private long createRandomLong(final long minValue, final long maxValue) {
         if (minValue >= maxValue) {
             throw new IllegalArgumentException("minValue must be less than maxValue");
@@ -239,7 +244,7 @@ public final class IssueGenerator {
 
     private static String createExceptionStackTrace() {
         try {
-            throw new RuntimeException("A system error occurred. Please restart the universe.");
+            throw new RuntimeException("Ein Systemfehler ist aufgetreten. Booten Sie das Universum.");
         } catch (final Exception exception) {
 
             final Writer stringWriter = new StringWriter();
