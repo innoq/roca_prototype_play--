@@ -14,7 +14,7 @@ DS_Store*
 /app/assets/.DS_Store
 /public/.DS_Store
 /public/javascripts/.DS_Store
-
+/tools/*
 .DS_Store
 
 nbproject
