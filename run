@@ -4,7 +4,7 @@ cd tools
 
 if [ ! -e "sbt-launch.jar" ]
 then
-  wget http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch//0.12.1/sbt-launch.jar	
+  wget -T 2 http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch//0.12.1/sbt-launch.jar || rm -f sbt-launch.jar	
   if [ ! -s "sbt-launch.jar" ]
   then
     echo >&2 "ERROR: Could not download SBT"
