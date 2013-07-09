@@ -1,8 +1,59 @@
 <!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-    <p><a href="/services/issues/open">pagination, sorting and filtering logic on the server</a></p>
-    <p><a href="/services/clientside/issues/open">pagination, sorting and filtering logic on the client</a></p>
-</body>
+<html lang="en">
+    <head>
+        <title>ROCA: Not my issue</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/bootstrap.min.css")"/>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")"/>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/roca_lvm.css")"/>
+    </head>
+    <body>
+
+            <!-- Menubar -->
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="brand" href="#">Not my Issue</a>
+                    <div class="nav navbar-text">A basic demonstration of <a href="http://roca-style.org/index.html">ROCA</a>
+                        -style web applications</div>
+                    <a class="nav navbar-text pull-right" href="#about">About</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span8 offset1">
+                <h1>Server-side implementation</h1>
+                <p>
+                    All functionality is implented on the server side. This version is fully usable with Javascript disabled in the browser.
+                </p>
+                <p><a href="/services/issues/open" class="btn btn-primary btn-large">Try it out »</a></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span8 offset1">
+                <h1>Javascript-enhanced client</h1>
+                <p>
+                    Some GUI functionality (pagination, sorting and filtering) is implemented in Javascript so fewer server roundtrips are required. The complete business functionality
+                    still resides on the server.
+                </p>
+                <p><a href="/services/clientside/issues/open" class="btn btn-primary btn-large">Try it out »</a></p>
+            </div>
+        </div>
+
+        <div class="navbar navbar-fixed-bottom">
+            <div class="row roca-ref">
+                <div class="span8 offset1">
+                    <h1>
+                        <a href="http://roca-style.org/index.html">ROCA <small>Resource-oriented Client Architecture</small></a>
+                    </h1>
+                    <p>A collection of simple recommendations for decent Web application frontends</p>
+                    <p>Find out more at <a href="http://roca-style.org/index.html"/>roca-style.org</p>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

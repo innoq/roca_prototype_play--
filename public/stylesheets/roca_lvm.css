@@ -1,3 +1,64 @@
+.roca-ref {
+    border-bottom: 0;
+    background-color: LightGray
+}
+
+.roca-ref h1 {
+    font-size: 32px;
+    margin-bottom: 9px;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.roca-ref h1 small {
+    letter-spacing: 0px;
+    font-size: 12px;
+}
+
+h1 a:link, h1 a:visited {
+    text-decoration: none;
+    color:black;
+}
+
+header.main {
+    margin-top: 40px;
+    border-bottom: 0;
+}
+
+header.main h1 {
+    font-size: 54px;
+    margin-bottom: 9px;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+header.main h1 small {
+    letter-spacing: 0px;
+    font-size: 16px;
+}
+
+header.main h1, p {
+    margin-right: 0;
+}
+
+h2 {
+    margin-top: 30px;
+}
+
+h3.license {
+    margin-bottom: 10px;
+}
+
+ol li {
+    margin-top: 5px;
+}
+
+h1 a:link, h1 a:visited {
+    text-decoration: none;
+    color:black;
+}
+
+
 .filter-column {
 	display: inline-block;
 }
